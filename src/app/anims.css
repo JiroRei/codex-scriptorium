@@ -1,0 +1,60 @@
+.book {
+  perspective: 1600px;
+}
+
+.page-stack {
+  position: relative;
+  width: 320px;
+  height: 420px;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    #f6eed7,
+    #eadfbe
+  );
+  border: 3px solid var(--ink-main);
+  box-shadow: 6px 6px 0 var(--ink-main);
+  backface-visibility: hidden;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+.page-flip {
+  transform-origin: left center;
+  animation: flip-forward 0.9s ease-in-out forwards;
+}
+
+@keyframes flip-forward {
+  0% {
+    transform: rotateY(0deg);
+    box-shadow: 6px 6px 0 var(--ink-main);
+  }
+
+  50% {
+    box-shadow: 20px 6px 20px rgba(0,0,0,0.35);
+  }
+
+  100% {
+    transform: rotateY(-180deg);
+    box-shadow: none;
+  }
+}
+.page-flip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.35),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.page-flip.animating::after {
+  opacity: 1;
+}

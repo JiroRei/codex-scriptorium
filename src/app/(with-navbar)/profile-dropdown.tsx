@@ -1,0 +1,192 @@
+import { MedievalSharp } from "next/font/google";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { SignedIn, useClerk, UserButton, useUser } from "@clerk/nextjs";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import * as ico from "lucide-react";
+
+
+const myFont = MedievalSharp({
+  weight: "400",
+  subsets: ["latin"],
+  });
+  
+export default function ProfileMenu(){
+  const { openUserProfile, signOut } = useClerk();
+  const { isSignedIn, user, isLoaded } = useUser()
+  const [showNewDialog, setShowNewDialog] = useState(false)
+  const [showShareDialog, setShowShareDialog] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!file) {
+      setPreviewUrl(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
+
+  useEffect(() => {
+  if (!showNewDialog) {
+    setFile(null);
+    setFileName(null);
+  }
+  }, [showNewDialog]);
+
+
+  return(
+    <main>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <div className="mr-1 border-red-950 border-1 shadow-red-950 bg-primary flex items-center px-4 py-1 mt-3 gap-3 shadow text-secondary-foreground border-1 hover:cursor-pointer">
+          
+          <div className="flex items-center gap-3">
+            <Image src={`${user?.imageUrl}`} width={35} height={35} alt="profile" className="border-2 border-ring"/>
+            <span className={`${myFont.className} text-2xl text-primary-foreground`}>{user?.username}</span>
+          </div>
+        
+          <ico.ChevronDown className="w-6 transition-transform data-[state=open]:rotate-180"/>
+          </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-60 " align="end">
+          <DropdownMenuLabel className="flex justify-between gap-2">
+            <div className="hover:cursor-default">
+            {user?.username}
+            </div>
+            <Label onClick={() => openUserProfile()} className="text-xs text-gray-600 hover:cursor-pointer"> Manage Account</Label>  
+          </DropdownMenuLabel>
+          <Separator className=""/>
+          <DropdownMenuGroup>
+              <DropdownMenuItem onSelect={() => setShowNewDialog(true)} className=" hover:cursor-pointer">
+                  Upload Art
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setShowShareDialog(true)} className=" hover:cursor-pointer">
+                  Create Series
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => signOut()} className="group text-accent2 hover:cursor-pointer">
+                 <p className="group-data-[highlighted]:text-red-500">Log Out</p> <ico.LogOut className="group-data-[highlighted]:text-red-500" /> 
+              </DropdownMenuItem>
+          </DropdownMenuGroup>
+          
+          </DropdownMenuContent>
+          
+        </DropdownMenu>
+        
+        <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Upload Art</DialogTitle>
+              <DialogDescription>
+                Upload your creation here.
+              </DialogDescription>
+            </DialogHeader>
+            <FieldGroup className="pb-3">
+              <Field>
+                <FieldLabel htmlFor="imageUpload">Title</FieldLabel>
+                <Input type="text" id="title" name="title" placeholder="Title of your work" className="-shadow focus-visible:ring-[1px] bg-white"/>
+                
+                  <Input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] ?? null;
+                    setFile(file);
+                    setFileName(file ? file.name : null);
+                  }}
+                />
+                <Button className="flex justify-center border-1" onClick={() => fileInputRef.current?.click()}> <ico.Upload />Upload Image File</Button>
+
+              </Field>
+            </FieldGroup>
+              <div className="flex justify-center">
+              {previewUrl && (
+              <div className="relative w-full max-w-xs aspect-square  rounded overflow-hidden">
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            )}
+            </div>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button className="shadow">Cancel</Button>
+              </DialogClose>
+              <Button type="submit" className="shadow bg-secondary text-secondary-foreground hover:text-primary-foreground">
+                Upload
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
+            <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+                <DialogTitle>Share File</DialogTitle>
+                <DialogDescription>
+                Anyone with the link will be able to view this file.
+                </DialogDescription>
+            </DialogHeader>
+            <FieldGroup className="py-3">
+                <Field>
+                <Label htmlFor="email">Email Address</Label>
+                <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="shadcn@vercel.com"
+                    autoComplete="off"
+                />
+                </Field>
+                <Field>
+                <FieldLabel htmlFor="message">Message (Optional)</FieldLabel>
+                <Textarea
+                    id="message"
+                    name="message"
+                    placeholder="Check out this file"
+                />
+                </Field>
+            </FieldGroup>
+            <DialogFooter>
+                <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+                </DialogClose>
+                <Button type="submit">Send Invite</Button>
+            </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    
+    </main>
+  );
+}

@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// model User {
+//   id        String   @id    // Clerk user ID
+//   username  String
+//   avatarUrl String?
+//   createdAt DateTime @default(now())
+
+//   series     Series[]
+//   comments   Comment[]
+//   likes      Like[]
+//   artworks   Artwork[]
+//   artLikes   ArtLike[]
+//   artComments ArtComment[]
+// }
+
+model Series {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  coverUrl    String?
+  genre       String?
+  creatorId   String
+  creatorName String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  episodes    Episode[]
+}
+
+model Episode {
+  id        String       @id @default(cuid())
+  title     String
+  number    Int
+  seriesId  String
+  createdAt DateTime  @default(now())
+  
+  series    Series    @relation(fields: [seriesId], references: [id])
+  images    EpisodeImage[]
+
+  comments  Comment[]
+}
+
+model EpisodeImage {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  order     Int
+
+  episodeId String
+  episode   Episode  @relation(fields: [episodeId], references: [id])
+}
+
+model Comment {
+  id        String       @id @default(cuid())
+  userId    String
+  episodeId String
+  content   String
+  createdAt DateTime  @default(now())
+
+  user      String
+  episode   Episode @relation(fields: [episodeId], references: [id])
+}
+
+model Artwork {
+  id         String      @id @default(cuid())
+  title      String
+  description String?
+  imageUrl   String   
+  tags       String[]
+  creatorId  String    
+  createdAt  DateTime  @default(now())
+
+  creator    String
+  comments   ArtComment[]
+  likes      ArtLike[]
+}
+
+model ArtComment {
+  id        String     @id @default(cuid())
+  artworkId String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+
+  artwork Artwork @relation(fields: [artworkId], references: [id])
+  user    String
+}
+
+model ArtLike {
+  id        String     @id @default(cuid())
+  artworkId String
+  userId    String
+
+  artwork Artwork @relation(fields: [artworkId], references: [id])
+  user    String
+
+  @@unique([artworkId, userId])
+}
+
+
+
+
+
