@@ -1,3 +1,4 @@
+
 import { MedievalSharp } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +27,12 @@ import { SignedIn, useClerk, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import * as ico from "lucide-react";
-
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { ArtZodGoodies, createArtSchema } from "@/lib/artwork.schema";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createArtwork } from "../actions/create-artwork";
 
 const myFont = MedievalSharp({
   weight: "400",
@@ -38,10 +44,11 @@ export default function ProfileMenu(){
   const { isSignedIn, user, isLoaded } = useUser()
   const [showNewDialog, setShowNewDialog] = useState(false)
   const [showShareDialog, setShowShareDialog] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  
 
   useEffect(() => {
     if (!file) {
@@ -62,6 +69,30 @@ export default function ProfileMenu(){
   }
   }, [showNewDialog]);
 
+  const form = useForm<ArtZodGoodies>({
+    resolver: zodResolver(createArtSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      imageUrl: undefined,
+      tags: [],
+      creatorId: user?.id
+    }
+  })
+
+  const onSubmit = async (values: any) => {
+    await createArtwork(values);
+  }
+  
+  function handleFileChange(e: any){
+    const file = e.target.files?.[0];
+    if(file){
+      setFile(file)
+      setFileName(file.fileName)
+    }else{
+      setFile(null)
+    }
+  }
 
   return(
     <main>
@@ -86,6 +117,9 @@ export default function ProfileMenu(){
           </DropdownMenuLabel>
           <Separator className=""/>
           <DropdownMenuGroup>
+            <DropdownMenuItem asChild className=" hover:cursor-pointer">
+                  <Link href={`/profile/${user?.username}`}>Profile</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => setShowNewDialog(true)} className=" hover:cursor-pointer">
                   Upload Art
               </DropdownMenuItem>
@@ -109,36 +143,63 @@ export default function ProfileMenu(){
                 Upload your creation here.
               </DialogDescription>
             </DialogHeader>
-            <FieldGroup className="pb-3">
-              <Field>
-                <FieldLabel htmlFor="imageUpload">Title</FieldLabel>
-                <Input type="text" id="title" name="title" placeholder="Title of your work" className="-shadow focus-visible:ring-[1px] bg-white"/>
-                
-                  <Input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0] ?? null;
-                    setFile(file);
-                    setFileName(file ? file.name : null);
-                  }}
-                />
-                <Button className="flex justify-center border-1" onClick={() => fileInputRef.current?.click()}> <ico.Upload />Upload Image File</Button>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="pb-3">
+                <FormField control={form.control} name="title" render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="Title of your work"
+                      {...field} className="-shadow focus-visible:ring-[1px] bg-white"/>
+                    </FormControl>
+                  </FormItem>
+                )} />
 
-              </Field>
-            </FieldGroup>
+                <FormField control={form.control} name="description" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Desc</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe your work here."
+                        maxLength={150}
+                        {...field}
+                        className="-shadow focus-visible:ring-[1px] bg-white"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )} />
+
+                <FormField control={form.control} name="imageUrl" render={({field: {onChange, value, ...field}}) => (
+                  <FormItem>
+                    <FormLabel>Upload</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        // ref={fileInputRef}
+                        className=""
+                        onChange={(e) => {
+                          handleFileChange(e);
+                          onChange(e.target.files);
+                        }}
+                        {...field}
+                      />
+                      {/* <Button className="flex justify-center border-1" onClick={() => fileInputRef.current?.click()}> <ico.Upload />Upload Image File</Button> */}
+                    </FormControl>
+                  </FormItem>
+                )} />
+
+              
               <div className="flex justify-center">
-              {previewUrl && (
-              <div className="relative w-full max-w-xs aspect-square  rounded overflow-hidden">
-                <Image
-                  src={previewUrl}
-                  alt="Preview"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            )}
+                {previewUrl && (
+                <div className="relative w-full max-w-xs aspect-square  rounded overflow-hidden">
+                  <Image
+                    src={previewUrl}
+                    alt="Preview"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
             </div>
             <DialogFooter>
               <DialogClose asChild>
@@ -148,6 +209,8 @@ export default function ProfileMenu(){
                 Upload
               </Button>
             </DialogFooter>
+            </form>
+            </Form>
           </DialogContent>
         </Dialog>
         <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>

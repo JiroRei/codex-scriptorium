@@ -38,7 +38,7 @@ export type EpisodeMinAggregateOutputType = {
   id: string | null
   title: string | null
   number: number | null
-  seriesId: string | null
+  c_seriesId: string | null
   createdAt: Date | null
 }
 
@@ -46,7 +46,7 @@ export type EpisodeMaxAggregateOutputType = {
   id: string | null
   title: string | null
   number: number | null
-  seriesId: string | null
+  c_seriesId: string | null
   createdAt: Date | null
 }
 
@@ -54,7 +54,7 @@ export type EpisodeCountAggregateOutputType = {
   id: number
   title: number
   number: number
-  seriesId: number
+  c_seriesId: number
   createdAt: number
   _all: number
 }
@@ -72,7 +72,7 @@ export type EpisodeMinAggregateInputType = {
   id?: true
   title?: true
   number?: true
-  seriesId?: true
+  c_seriesId?: true
   createdAt?: true
 }
 
@@ -80,7 +80,7 @@ export type EpisodeMaxAggregateInputType = {
   id?: true
   title?: true
   number?: true
-  seriesId?: true
+  c_seriesId?: true
   createdAt?: true
 }
 
@@ -88,7 +88,7 @@ export type EpisodeCountAggregateInputType = {
   id?: true
   title?: true
   number?: true
-  seriesId?: true
+  c_seriesId?: true
   createdAt?: true
   _all?: true
 }
@@ -183,7 +183,7 @@ export type EpisodeGroupByOutputType = {
   id: string
   title: string
   number: number
-  seriesId: string
+  c_seriesId: string
   createdAt: Date
   _count: EpisodeCountAggregateOutputType | null
   _avg: EpisodeAvgAggregateOutputType | null
@@ -214,43 +214,44 @@ export type EpisodeWhereInput = {
   id?: Prisma.StringFilter<"Episode"> | string
   title?: Prisma.StringFilter<"Episode"> | string
   number?: Prisma.IntFilter<"Episode"> | number
-  seriesId?: Prisma.StringFilter<"Episode"> | string
+  c_seriesId?: Prisma.StringFilter<"Episode"> | string
   createdAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
-  series?: Prisma.XOR<Prisma.SeriesScalarRelationFilter, Prisma.SeriesWhereInput>
+  c_series?: Prisma.XOR<Prisma.ComicSeriesScalarRelationFilter, Prisma.ComicSeriesWhereInput>
   images?: Prisma.EpisodeImageListRelationFilter
-  comments?: Prisma.CommentListRelationFilter
+  comments?: Prisma.CommentComicsListRelationFilter
 }
 
 export type EpisodeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   number?: Prisma.SortOrder
-  seriesId?: Prisma.SortOrder
+  c_seriesId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  series?: Prisma.SeriesOrderByWithRelationInput
+  c_series?: Prisma.ComicSeriesOrderByWithRelationInput
   images?: Prisma.EpisodeImageOrderByRelationAggregateInput
-  comments?: Prisma.CommentOrderByRelationAggregateInput
+  comments?: Prisma.CommentComicsOrderByRelationAggregateInput
 }
 
 export type EpisodeWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  c_seriesId_number?: Prisma.EpisodeC_seriesIdNumberCompoundUniqueInput
   AND?: Prisma.EpisodeWhereInput | Prisma.EpisodeWhereInput[]
   OR?: Prisma.EpisodeWhereInput[]
   NOT?: Prisma.EpisodeWhereInput | Prisma.EpisodeWhereInput[]
   title?: Prisma.StringFilter<"Episode"> | string
   number?: Prisma.IntFilter<"Episode"> | number
-  seriesId?: Prisma.StringFilter<"Episode"> | string
+  c_seriesId?: Prisma.StringFilter<"Episode"> | string
   createdAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
-  series?: Prisma.XOR<Prisma.SeriesScalarRelationFilter, Prisma.SeriesWhereInput>
+  c_series?: Prisma.XOR<Prisma.ComicSeriesScalarRelationFilter, Prisma.ComicSeriesWhereInput>
   images?: Prisma.EpisodeImageListRelationFilter
-  comments?: Prisma.CommentListRelationFilter
-}, "id">
+  comments?: Prisma.CommentComicsListRelationFilter
+}, "id" | "c_seriesId_number">
 
 export type EpisodeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   number?: Prisma.SortOrder
-  seriesId?: Prisma.SortOrder
+  c_seriesId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.EpisodeCountOrderByAggregateInput
   _avg?: Prisma.EpisodeAvgOrderByAggregateInput
@@ -266,7 +267,7 @@ export type EpisodeScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Episode"> | string
   title?: Prisma.StringWithAggregatesFilter<"Episode"> | string
   number?: Prisma.IntWithAggregatesFilter<"Episode"> | number
-  seriesId?: Prisma.StringWithAggregatesFilter<"Episode"> | string
+  c_seriesId?: Prisma.StringWithAggregatesFilter<"Episode"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Episode"> | Date | string
 }
 
@@ -275,19 +276,19 @@ export type EpisodeCreateInput = {
   title: string
   number: number
   createdAt?: Date | string
-  series: Prisma.SeriesCreateNestedOneWithoutEpisodesInput
+  c_series: Prisma.ComicSeriesCreateNestedOneWithoutEpisodesInput
   images?: Prisma.EpisodeImageCreateNestedManyWithoutEpisodeInput
-  comments?: Prisma.CommentCreateNestedManyWithoutEpisodeInput
+  comments?: Prisma.CommentComicsCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeUncheckedCreateInput = {
   id?: string
   title: string
   number: number
-  seriesId: string
+  c_seriesId: string
   createdAt?: Date | string
   images?: Prisma.EpisodeImageUncheckedCreateNestedManyWithoutEpisodeInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEpisodeInput
+  comments?: Prisma.CommentComicsUncheckedCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeUpdateInput = {
@@ -295,26 +296,26 @@ export type EpisodeUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  series?: Prisma.SeriesUpdateOneRequiredWithoutEpisodesNestedInput
+  c_series?: Prisma.ComicSeriesUpdateOneRequiredWithoutEpisodesNestedInput
   images?: Prisma.EpisodeImageUpdateManyWithoutEpisodeNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutEpisodeNestedInput
+  comments?: Prisma.CommentComicsUpdateManyWithoutEpisodeNestedInput
 }
 
 export type EpisodeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
-  seriesId?: Prisma.StringFieldUpdateOperationsInput | string
+  c_seriesId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.EpisodeImageUncheckedUpdateManyWithoutEpisodeNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutEpisodeNestedInput
+  comments?: Prisma.CommentComicsUncheckedUpdateManyWithoutEpisodeNestedInput
 }
 
 export type EpisodeCreateManyInput = {
   id?: string
   title: string
   number: number
-  seriesId: string
+  c_seriesId: string
   createdAt?: Date | string
 }
 
@@ -329,7 +330,7 @@ export type EpisodeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
-  seriesId?: Prisma.StringFieldUpdateOperationsInput | string
+  c_seriesId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -343,11 +344,16 @@ export type EpisodeOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type EpisodeC_seriesIdNumberCompoundUniqueInput = {
+  c_seriesId: string
+  number: number
+}
+
 export type EpisodeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   number?: Prisma.SortOrder
-  seriesId?: Prisma.SortOrder
+  c_seriesId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -359,7 +365,7 @@ export type EpisodeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   number?: Prisma.SortOrder
-  seriesId?: Prisma.SortOrder
+  c_seriesId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -367,7 +373,7 @@ export type EpisodeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   number?: Prisma.SortOrder
-  seriesId?: Prisma.SortOrder
+  c_seriesId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -380,45 +386,45 @@ export type EpisodeScalarRelationFilter = {
   isNot?: Prisma.EpisodeWhereInput
 }
 
-export type EpisodeCreateNestedManyWithoutSeriesInput = {
-  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutSeriesInput, Prisma.EpisodeUncheckedCreateWithoutSeriesInput> | Prisma.EpisodeCreateWithoutSeriesInput[] | Prisma.EpisodeUncheckedCreateWithoutSeriesInput[]
-  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutSeriesInput | Prisma.EpisodeCreateOrConnectWithoutSeriesInput[]
-  createMany?: Prisma.EpisodeCreateManySeriesInputEnvelope
+export type EpisodeCreateNestedManyWithoutC_seriesInput = {
+  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutC_seriesInput, Prisma.EpisodeUncheckedCreateWithoutC_seriesInput> | Prisma.EpisodeCreateWithoutC_seriesInput[] | Prisma.EpisodeUncheckedCreateWithoutC_seriesInput[]
+  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutC_seriesInput | Prisma.EpisodeCreateOrConnectWithoutC_seriesInput[]
+  createMany?: Prisma.EpisodeCreateManyC_seriesInputEnvelope
   connect?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
 }
 
-export type EpisodeUncheckedCreateNestedManyWithoutSeriesInput = {
-  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutSeriesInput, Prisma.EpisodeUncheckedCreateWithoutSeriesInput> | Prisma.EpisodeCreateWithoutSeriesInput[] | Prisma.EpisodeUncheckedCreateWithoutSeriesInput[]
-  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutSeriesInput | Prisma.EpisodeCreateOrConnectWithoutSeriesInput[]
-  createMany?: Prisma.EpisodeCreateManySeriesInputEnvelope
+export type EpisodeUncheckedCreateNestedManyWithoutC_seriesInput = {
+  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutC_seriesInput, Prisma.EpisodeUncheckedCreateWithoutC_seriesInput> | Prisma.EpisodeCreateWithoutC_seriesInput[] | Prisma.EpisodeUncheckedCreateWithoutC_seriesInput[]
+  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutC_seriesInput | Prisma.EpisodeCreateOrConnectWithoutC_seriesInput[]
+  createMany?: Prisma.EpisodeCreateManyC_seriesInputEnvelope
   connect?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
 }
 
-export type EpisodeUpdateManyWithoutSeriesNestedInput = {
-  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutSeriesInput, Prisma.EpisodeUncheckedCreateWithoutSeriesInput> | Prisma.EpisodeCreateWithoutSeriesInput[] | Prisma.EpisodeUncheckedCreateWithoutSeriesInput[]
-  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutSeriesInput | Prisma.EpisodeCreateOrConnectWithoutSeriesInput[]
-  upsert?: Prisma.EpisodeUpsertWithWhereUniqueWithoutSeriesInput | Prisma.EpisodeUpsertWithWhereUniqueWithoutSeriesInput[]
-  createMany?: Prisma.EpisodeCreateManySeriesInputEnvelope
+export type EpisodeUpdateManyWithoutC_seriesNestedInput = {
+  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutC_seriesInput, Prisma.EpisodeUncheckedCreateWithoutC_seriesInput> | Prisma.EpisodeCreateWithoutC_seriesInput[] | Prisma.EpisodeUncheckedCreateWithoutC_seriesInput[]
+  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutC_seriesInput | Prisma.EpisodeCreateOrConnectWithoutC_seriesInput[]
+  upsert?: Prisma.EpisodeUpsertWithWhereUniqueWithoutC_seriesInput | Prisma.EpisodeUpsertWithWhereUniqueWithoutC_seriesInput[]
+  createMany?: Prisma.EpisodeCreateManyC_seriesInputEnvelope
   set?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
   disconnect?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
   delete?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
   connect?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
-  update?: Prisma.EpisodeUpdateWithWhereUniqueWithoutSeriesInput | Prisma.EpisodeUpdateWithWhereUniqueWithoutSeriesInput[]
-  updateMany?: Prisma.EpisodeUpdateManyWithWhereWithoutSeriesInput | Prisma.EpisodeUpdateManyWithWhereWithoutSeriesInput[]
+  update?: Prisma.EpisodeUpdateWithWhereUniqueWithoutC_seriesInput | Prisma.EpisodeUpdateWithWhereUniqueWithoutC_seriesInput[]
+  updateMany?: Prisma.EpisodeUpdateManyWithWhereWithoutC_seriesInput | Prisma.EpisodeUpdateManyWithWhereWithoutC_seriesInput[]
   deleteMany?: Prisma.EpisodeScalarWhereInput | Prisma.EpisodeScalarWhereInput[]
 }
 
-export type EpisodeUncheckedUpdateManyWithoutSeriesNestedInput = {
-  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutSeriesInput, Prisma.EpisodeUncheckedCreateWithoutSeriesInput> | Prisma.EpisodeCreateWithoutSeriesInput[] | Prisma.EpisodeUncheckedCreateWithoutSeriesInput[]
-  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutSeriesInput | Prisma.EpisodeCreateOrConnectWithoutSeriesInput[]
-  upsert?: Prisma.EpisodeUpsertWithWhereUniqueWithoutSeriesInput | Prisma.EpisodeUpsertWithWhereUniqueWithoutSeriesInput[]
-  createMany?: Prisma.EpisodeCreateManySeriesInputEnvelope
+export type EpisodeUncheckedUpdateManyWithoutC_seriesNestedInput = {
+  create?: Prisma.XOR<Prisma.EpisodeCreateWithoutC_seriesInput, Prisma.EpisodeUncheckedCreateWithoutC_seriesInput> | Prisma.EpisodeCreateWithoutC_seriesInput[] | Prisma.EpisodeUncheckedCreateWithoutC_seriesInput[]
+  connectOrCreate?: Prisma.EpisodeCreateOrConnectWithoutC_seriesInput | Prisma.EpisodeCreateOrConnectWithoutC_seriesInput[]
+  upsert?: Prisma.EpisodeUpsertWithWhereUniqueWithoutC_seriesInput | Prisma.EpisodeUpsertWithWhereUniqueWithoutC_seriesInput[]
+  createMany?: Prisma.EpisodeCreateManyC_seriesInputEnvelope
   set?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
   disconnect?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
   delete?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
   connect?: Prisma.EpisodeWhereUniqueInput | Prisma.EpisodeWhereUniqueInput[]
-  update?: Prisma.EpisodeUpdateWithWhereUniqueWithoutSeriesInput | Prisma.EpisodeUpdateWithWhereUniqueWithoutSeriesInput[]
-  updateMany?: Prisma.EpisodeUpdateManyWithWhereWithoutSeriesInput | Prisma.EpisodeUpdateManyWithWhereWithoutSeriesInput[]
+  update?: Prisma.EpisodeUpdateWithWhereUniqueWithoutC_seriesInput | Prisma.EpisodeUpdateWithWhereUniqueWithoutC_seriesInput[]
+  updateMany?: Prisma.EpisodeUpdateManyWithWhereWithoutC_seriesInput | Prisma.EpisodeUpdateManyWithWhereWithoutC_seriesInput[]
   deleteMany?: Prisma.EpisodeScalarWhereInput | Prisma.EpisodeScalarWhereInput[]
 }
 
@@ -458,48 +464,48 @@ export type EpisodeUpdateOneRequiredWithoutCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EpisodeUpdateToOneWithWhereWithoutCommentsInput, Prisma.EpisodeUpdateWithoutCommentsInput>, Prisma.EpisodeUncheckedUpdateWithoutCommentsInput>
 }
 
-export type EpisodeCreateWithoutSeriesInput = {
+export type EpisodeCreateWithoutC_seriesInput = {
   id?: string
   title: string
   number: number
   createdAt?: Date | string
   images?: Prisma.EpisodeImageCreateNestedManyWithoutEpisodeInput
-  comments?: Prisma.CommentCreateNestedManyWithoutEpisodeInput
+  comments?: Prisma.CommentComicsCreateNestedManyWithoutEpisodeInput
 }
 
-export type EpisodeUncheckedCreateWithoutSeriesInput = {
+export type EpisodeUncheckedCreateWithoutC_seriesInput = {
   id?: string
   title: string
   number: number
   createdAt?: Date | string
   images?: Prisma.EpisodeImageUncheckedCreateNestedManyWithoutEpisodeInput
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEpisodeInput
+  comments?: Prisma.CommentComicsUncheckedCreateNestedManyWithoutEpisodeInput
 }
 
-export type EpisodeCreateOrConnectWithoutSeriesInput = {
+export type EpisodeCreateOrConnectWithoutC_seriesInput = {
   where: Prisma.EpisodeWhereUniqueInput
-  create: Prisma.XOR<Prisma.EpisodeCreateWithoutSeriesInput, Prisma.EpisodeUncheckedCreateWithoutSeriesInput>
+  create: Prisma.XOR<Prisma.EpisodeCreateWithoutC_seriesInput, Prisma.EpisodeUncheckedCreateWithoutC_seriesInput>
 }
 
-export type EpisodeCreateManySeriesInputEnvelope = {
-  data: Prisma.EpisodeCreateManySeriesInput | Prisma.EpisodeCreateManySeriesInput[]
+export type EpisodeCreateManyC_seriesInputEnvelope = {
+  data: Prisma.EpisodeCreateManyC_seriesInput | Prisma.EpisodeCreateManyC_seriesInput[]
   skipDuplicates?: boolean
 }
 
-export type EpisodeUpsertWithWhereUniqueWithoutSeriesInput = {
+export type EpisodeUpsertWithWhereUniqueWithoutC_seriesInput = {
   where: Prisma.EpisodeWhereUniqueInput
-  update: Prisma.XOR<Prisma.EpisodeUpdateWithoutSeriesInput, Prisma.EpisodeUncheckedUpdateWithoutSeriesInput>
-  create: Prisma.XOR<Prisma.EpisodeCreateWithoutSeriesInput, Prisma.EpisodeUncheckedCreateWithoutSeriesInput>
+  update: Prisma.XOR<Prisma.EpisodeUpdateWithoutC_seriesInput, Prisma.EpisodeUncheckedUpdateWithoutC_seriesInput>
+  create: Prisma.XOR<Prisma.EpisodeCreateWithoutC_seriesInput, Prisma.EpisodeUncheckedCreateWithoutC_seriesInput>
 }
 
-export type EpisodeUpdateWithWhereUniqueWithoutSeriesInput = {
+export type EpisodeUpdateWithWhereUniqueWithoutC_seriesInput = {
   where: Prisma.EpisodeWhereUniqueInput
-  data: Prisma.XOR<Prisma.EpisodeUpdateWithoutSeriesInput, Prisma.EpisodeUncheckedUpdateWithoutSeriesInput>
+  data: Prisma.XOR<Prisma.EpisodeUpdateWithoutC_seriesInput, Prisma.EpisodeUncheckedUpdateWithoutC_seriesInput>
 }
 
-export type EpisodeUpdateManyWithWhereWithoutSeriesInput = {
+export type EpisodeUpdateManyWithWhereWithoutC_seriesInput = {
   where: Prisma.EpisodeScalarWhereInput
-  data: Prisma.XOR<Prisma.EpisodeUpdateManyMutationInput, Prisma.EpisodeUncheckedUpdateManyWithoutSeriesInput>
+  data: Prisma.XOR<Prisma.EpisodeUpdateManyMutationInput, Prisma.EpisodeUncheckedUpdateManyWithoutC_seriesInput>
 }
 
 export type EpisodeScalarWhereInput = {
@@ -509,7 +515,7 @@ export type EpisodeScalarWhereInput = {
   id?: Prisma.StringFilter<"Episode"> | string
   title?: Prisma.StringFilter<"Episode"> | string
   number?: Prisma.IntFilter<"Episode"> | number
-  seriesId?: Prisma.StringFilter<"Episode"> | string
+  c_seriesId?: Prisma.StringFilter<"Episode"> | string
   createdAt?: Prisma.DateTimeFilter<"Episode"> | Date | string
 }
 
@@ -518,17 +524,17 @@ export type EpisodeCreateWithoutImagesInput = {
   title: string
   number: number
   createdAt?: Date | string
-  series: Prisma.SeriesCreateNestedOneWithoutEpisodesInput
-  comments?: Prisma.CommentCreateNestedManyWithoutEpisodeInput
+  c_series: Prisma.ComicSeriesCreateNestedOneWithoutEpisodesInput
+  comments?: Prisma.CommentComicsCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeUncheckedCreateWithoutImagesInput = {
   id?: string
   title: string
   number: number
-  seriesId: string
+  c_seriesId: string
   createdAt?: Date | string
-  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutEpisodeInput
+  comments?: Prisma.CommentComicsUncheckedCreateNestedManyWithoutEpisodeInput
 }
 
 export type EpisodeCreateOrConnectWithoutImagesInput = {
@@ -552,17 +558,17 @@ export type EpisodeUpdateWithoutImagesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  series?: Prisma.SeriesUpdateOneRequiredWithoutEpisodesNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutEpisodeNestedInput
+  c_series?: Prisma.ComicSeriesUpdateOneRequiredWithoutEpisodesNestedInput
+  comments?: Prisma.CommentComicsUpdateManyWithoutEpisodeNestedInput
 }
 
 export type EpisodeUncheckedUpdateWithoutImagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
-  seriesId?: Prisma.StringFieldUpdateOperationsInput | string
+  c_seriesId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutEpisodeNestedInput
+  comments?: Prisma.CommentComicsUncheckedUpdateManyWithoutEpisodeNestedInput
 }
 
 export type EpisodeCreateWithoutCommentsInput = {
@@ -570,7 +576,7 @@ export type EpisodeCreateWithoutCommentsInput = {
   title: string
   number: number
   createdAt?: Date | string
-  series: Prisma.SeriesCreateNestedOneWithoutEpisodesInput
+  c_series: Prisma.ComicSeriesCreateNestedOneWithoutEpisodesInput
   images?: Prisma.EpisodeImageCreateNestedManyWithoutEpisodeInput
 }
 
@@ -578,7 +584,7 @@ export type EpisodeUncheckedCreateWithoutCommentsInput = {
   id?: string
   title: string
   number: number
-  seriesId: string
+  c_seriesId: string
   createdAt?: Date | string
   images?: Prisma.EpisodeImageUncheckedCreateNestedManyWithoutEpisodeInput
 }
@@ -604,7 +610,7 @@ export type EpisodeUpdateWithoutCommentsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  series?: Prisma.SeriesUpdateOneRequiredWithoutEpisodesNestedInput
+  c_series?: Prisma.ComicSeriesUpdateOneRequiredWithoutEpisodesNestedInput
   images?: Prisma.EpisodeImageUpdateManyWithoutEpisodeNestedInput
 }
 
@@ -612,37 +618,37 @@ export type EpisodeUncheckedUpdateWithoutCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
-  seriesId?: Prisma.StringFieldUpdateOperationsInput | string
+  c_seriesId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.EpisodeImageUncheckedUpdateManyWithoutEpisodeNestedInput
 }
 
-export type EpisodeCreateManySeriesInput = {
+export type EpisodeCreateManyC_seriesInput = {
   id?: string
   title: string
   number: number
   createdAt?: Date | string
 }
 
-export type EpisodeUpdateWithoutSeriesInput = {
+export type EpisodeUpdateWithoutC_seriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.EpisodeImageUpdateManyWithoutEpisodeNestedInput
-  comments?: Prisma.CommentUpdateManyWithoutEpisodeNestedInput
+  comments?: Prisma.CommentComicsUpdateManyWithoutEpisodeNestedInput
 }
 
-export type EpisodeUncheckedUpdateWithoutSeriesInput = {
+export type EpisodeUncheckedUpdateWithoutC_seriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.EpisodeImageUncheckedUpdateManyWithoutEpisodeNestedInput
-  comments?: Prisma.CommentUncheckedUpdateManyWithoutEpisodeNestedInput
+  comments?: Prisma.CommentComicsUncheckedUpdateManyWithoutEpisodeNestedInput
 }
 
-export type EpisodeUncheckedUpdateManyWithoutSeriesInput = {
+export type EpisodeUncheckedUpdateManyWithoutC_seriesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   number?: Prisma.IntFieldUpdateOperationsInput | number
@@ -685,7 +691,7 @@ export type EpisodeCountOutputTypeCountImagesArgs<ExtArgs extends runtime.Types.
  * EpisodeCountOutputType without action
  */
 export type EpisodeCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CommentWhereInput
+  where?: Prisma.CommentComicsWhereInput
 }
 
 
@@ -693,9 +699,9 @@ export type EpisodeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   title?: boolean
   number?: boolean
-  seriesId?: boolean
+  c_seriesId?: boolean
   createdAt?: boolean
-  series?: boolean | Prisma.SeriesDefaultArgs<ExtArgs>
+  c_series?: boolean | Prisma.ComicSeriesDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Episode$imagesArgs<ExtArgs>
   comments?: boolean | Prisma.Episode$commentsArgs<ExtArgs>
   _count?: boolean | Prisma.EpisodeCountOutputTypeDefaultArgs<ExtArgs>
@@ -705,54 +711,54 @@ export type EpisodeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   title?: boolean
   number?: boolean
-  seriesId?: boolean
+  c_seriesId?: boolean
   createdAt?: boolean
-  series?: boolean | Prisma.SeriesDefaultArgs<ExtArgs>
+  c_series?: boolean | Prisma.ComicSeriesDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episode"]>
 
 export type EpisodeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   number?: boolean
-  seriesId?: boolean
+  c_seriesId?: boolean
   createdAt?: boolean
-  series?: boolean | Prisma.SeriesDefaultArgs<ExtArgs>
+  c_series?: boolean | Prisma.ComicSeriesDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["episode"]>
 
 export type EpisodeSelectScalar = {
   id?: boolean
   title?: boolean
   number?: boolean
-  seriesId?: boolean
+  c_seriesId?: boolean
   createdAt?: boolean
 }
 
-export type EpisodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "number" | "seriesId" | "createdAt", ExtArgs["result"]["episode"]>
+export type EpisodeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "number" | "c_seriesId" | "createdAt", ExtArgs["result"]["episode"]>
 export type EpisodeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  series?: boolean | Prisma.SeriesDefaultArgs<ExtArgs>
+  c_series?: boolean | Prisma.ComicSeriesDefaultArgs<ExtArgs>
   images?: boolean | Prisma.Episode$imagesArgs<ExtArgs>
   comments?: boolean | Prisma.Episode$commentsArgs<ExtArgs>
   _count?: boolean | Prisma.EpisodeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EpisodeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  series?: boolean | Prisma.SeriesDefaultArgs<ExtArgs>
+  c_series?: boolean | Prisma.ComicSeriesDefaultArgs<ExtArgs>
 }
 export type EpisodeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  series?: boolean | Prisma.SeriesDefaultArgs<ExtArgs>
+  c_series?: boolean | Prisma.ComicSeriesDefaultArgs<ExtArgs>
 }
 
 export type $EpisodePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Episode"
   objects: {
-    series: Prisma.$SeriesPayload<ExtArgs>
+    c_series: Prisma.$ComicSeriesPayload<ExtArgs>
     images: Prisma.$EpisodeImagePayload<ExtArgs>[]
-    comments: Prisma.$CommentPayload<ExtArgs>[]
+    comments: Prisma.$CommentComicsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
     number: number
-    seriesId: string
+    c_seriesId: string
     createdAt: Date
   }, ExtArgs["result"]["episode"]>
   composites: {}
@@ -1148,9 +1154,9 @@ readonly fields: EpisodeFieldRefs;
  */
 export interface Prisma__EpisodeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  series<T extends Prisma.SeriesDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SeriesDefaultArgs<ExtArgs>>): Prisma.Prisma__SeriesClient<runtime.Types.Result.GetResult<Prisma.$SeriesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  c_series<T extends Prisma.ComicSeriesDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ComicSeriesDefaultArgs<ExtArgs>>): Prisma.Prisma__ComicSeriesClient<runtime.Types.Result.GetResult<Prisma.$ComicSeriesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   images<T extends Prisma.Episode$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Episode$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EpisodeImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  comments<T extends Prisma.Episode$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Episode$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comments<T extends Prisma.Episode$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Episode$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentComicsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1183,7 +1189,7 @@ export interface EpisodeFieldRefs {
   readonly id: Prisma.FieldRef<"Episode", 'String'>
   readonly title: Prisma.FieldRef<"Episode", 'String'>
   readonly number: Prisma.FieldRef<"Episode", 'Int'>
-  readonly seriesId: Prisma.FieldRef<"Episode", 'String'>
+  readonly c_seriesId: Prisma.FieldRef<"Episode", 'String'>
   readonly createdAt: Prisma.FieldRef<"Episode", 'DateTime'>
 }
     
@@ -1609,23 +1615,23 @@ export type Episode$imagesArgs<ExtArgs extends runtime.Types.Extensions.Internal
  */
 export type Episode$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Comment
+   * Select specific fields to fetch from the CommentComics
    */
-  select?: Prisma.CommentSelect<ExtArgs> | null
+  select?: Prisma.CommentComicsSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Comment
+   * Omit specific fields from the CommentComics
    */
-  omit?: Prisma.CommentOmit<ExtArgs> | null
+  omit?: Prisma.CommentComicsOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.CommentInclude<ExtArgs> | null
-  where?: Prisma.CommentWhereInput
-  orderBy?: Prisma.CommentOrderByWithRelationInput | Prisma.CommentOrderByWithRelationInput[]
-  cursor?: Prisma.CommentWhereUniqueInput
+  include?: Prisma.CommentComicsInclude<ExtArgs> | null
+  where?: Prisma.CommentComicsWhereInput
+  orderBy?: Prisma.CommentComicsOrderByWithRelationInput | Prisma.CommentComicsOrderByWithRelationInput[]
+  cursor?: Prisma.CommentComicsWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+  distinct?: Prisma.CommentComicsScalarFieldEnum | Prisma.CommentComicsScalarFieldEnum[]
 }
 
 /**

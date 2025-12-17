@@ -30,7 +30,6 @@ export type ArtCommentMinAggregateOutputType = {
   userId: string | null
   content: string | null
   createdAt: Date | null
-  user: string | null
 }
 
 export type ArtCommentMaxAggregateOutputType = {
@@ -39,7 +38,6 @@ export type ArtCommentMaxAggregateOutputType = {
   userId: string | null
   content: string | null
   createdAt: Date | null
-  user: string | null
 }
 
 export type ArtCommentCountAggregateOutputType = {
@@ -48,7 +46,6 @@ export type ArtCommentCountAggregateOutputType = {
   userId: number
   content: number
   createdAt: number
-  user: number
   _all: number
 }
 
@@ -59,7 +56,6 @@ export type ArtCommentMinAggregateInputType = {
   userId?: true
   content?: true
   createdAt?: true
-  user?: true
 }
 
 export type ArtCommentMaxAggregateInputType = {
@@ -68,7 +64,6 @@ export type ArtCommentMaxAggregateInputType = {
   userId?: true
   content?: true
   createdAt?: true
-  user?: true
 }
 
 export type ArtCommentCountAggregateInputType = {
@@ -77,7 +72,6 @@ export type ArtCommentCountAggregateInputType = {
   userId?: true
   content?: true
   createdAt?: true
-  user?: true
   _all?: true
 }
 
@@ -159,7 +153,6 @@ export type ArtCommentGroupByOutputType = {
   userId: string
   content: string
   createdAt: Date
-  user: string
   _count: ArtCommentCountAggregateOutputType | null
   _min: ArtCommentMinAggregateOutputType | null
   _max: ArtCommentMaxAggregateOutputType | null
@@ -189,8 +182,8 @@ export type ArtCommentWhereInput = {
   userId?: Prisma.StringFilter<"ArtComment"> | string
   content?: Prisma.StringFilter<"ArtComment"> | string
   createdAt?: Prisma.DateTimeFilter<"ArtComment"> | Date | string
-  user?: Prisma.StringFilter<"ArtComment"> | string
   artwork?: Prisma.XOR<Prisma.ArtworkScalarRelationFilter, Prisma.ArtworkWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type ArtCommentOrderByWithRelationInput = {
@@ -199,8 +192,8 @@ export type ArtCommentOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  user?: Prisma.SortOrder
   artwork?: Prisma.ArtworkOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ArtCommentWhereUniqueInput = Prisma.AtLeast<{
@@ -212,8 +205,8 @@ export type ArtCommentWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"ArtComment"> | string
   content?: Prisma.StringFilter<"ArtComment"> | string
   createdAt?: Prisma.DateTimeFilter<"ArtComment"> | Date | string
-  user?: Prisma.StringFilter<"ArtComment"> | string
   artwork?: Prisma.XOR<Prisma.ArtworkScalarRelationFilter, Prisma.ArtworkWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type ArtCommentOrderByWithAggregationInput = {
@@ -222,7 +215,6 @@ export type ArtCommentOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  user?: Prisma.SortOrder
   _count?: Prisma.ArtCommentCountOrderByAggregateInput
   _max?: Prisma.ArtCommentMaxOrderByAggregateInput
   _min?: Prisma.ArtCommentMinOrderByAggregateInput
@@ -237,16 +229,14 @@ export type ArtCommentScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"ArtComment"> | string
   content?: Prisma.StringWithAggregatesFilter<"ArtComment"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ArtComment"> | Date | string
-  user?: Prisma.StringWithAggregatesFilter<"ArtComment"> | string
 }
 
 export type ArtCommentCreateInput = {
   id?: string
-  userId: string
   content: string
   createdAt?: Date | string
-  user: string
   artwork: Prisma.ArtworkCreateNestedOneWithoutCommentsInput
+  user: Prisma.UserCreateNestedOneWithoutArtCommentsInput
 }
 
 export type ArtCommentUncheckedCreateInput = {
@@ -255,16 +245,14 @@ export type ArtCommentUncheckedCreateInput = {
   userId: string
   content: string
   createdAt?: Date | string
-  user: string
 }
 
 export type ArtCommentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
   artwork?: Prisma.ArtworkUpdateOneRequiredWithoutCommentsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutArtCommentsNestedInput
 }
 
 export type ArtCommentUncheckedUpdateInput = {
@@ -273,7 +261,6 @@ export type ArtCommentUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtCommentCreateManyInput = {
@@ -282,15 +269,12 @@ export type ArtCommentCreateManyInput = {
   userId: string
   content: string
   createdAt?: Date | string
-  user: string
 }
 
 export type ArtCommentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtCommentUncheckedUpdateManyInput = {
@@ -299,7 +283,6 @@ export type ArtCommentUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtCommentListRelationFilter = {
@@ -318,7 +301,6 @@ export type ArtCommentCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  user?: Prisma.SortOrder
 }
 
 export type ArtCommentMaxOrderByAggregateInput = {
@@ -327,7 +309,6 @@ export type ArtCommentMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  user?: Prisma.SortOrder
 }
 
 export type ArtCommentMinOrderByAggregateInput = {
@@ -336,7 +317,48 @@ export type ArtCommentMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   content?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  user?: Prisma.SortOrder
+}
+
+export type ArtCommentCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ArtCommentCreateWithoutUserInput, Prisma.ArtCommentUncheckedCreateWithoutUserInput> | Prisma.ArtCommentCreateWithoutUserInput[] | Prisma.ArtCommentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtCommentCreateOrConnectWithoutUserInput | Prisma.ArtCommentCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ArtCommentCreateManyUserInputEnvelope
+  connect?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+}
+
+export type ArtCommentUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ArtCommentCreateWithoutUserInput, Prisma.ArtCommentUncheckedCreateWithoutUserInput> | Prisma.ArtCommentCreateWithoutUserInput[] | Prisma.ArtCommentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtCommentCreateOrConnectWithoutUserInput | Prisma.ArtCommentCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ArtCommentCreateManyUserInputEnvelope
+  connect?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+}
+
+export type ArtCommentUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ArtCommentCreateWithoutUserInput, Prisma.ArtCommentUncheckedCreateWithoutUserInput> | Prisma.ArtCommentCreateWithoutUserInput[] | Prisma.ArtCommentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtCommentCreateOrConnectWithoutUserInput | Prisma.ArtCommentCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ArtCommentUpsertWithWhereUniqueWithoutUserInput | Prisma.ArtCommentUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ArtCommentCreateManyUserInputEnvelope
+  set?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  disconnect?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  delete?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  connect?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  update?: Prisma.ArtCommentUpdateWithWhereUniqueWithoutUserInput | Prisma.ArtCommentUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ArtCommentUpdateManyWithWhereWithoutUserInput | Prisma.ArtCommentUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ArtCommentScalarWhereInput | Prisma.ArtCommentScalarWhereInput[]
+}
+
+export type ArtCommentUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ArtCommentCreateWithoutUserInput, Prisma.ArtCommentUncheckedCreateWithoutUserInput> | Prisma.ArtCommentCreateWithoutUserInput[] | Prisma.ArtCommentUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtCommentCreateOrConnectWithoutUserInput | Prisma.ArtCommentCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ArtCommentUpsertWithWhereUniqueWithoutUserInput | Prisma.ArtCommentUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ArtCommentCreateManyUserInputEnvelope
+  set?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  disconnect?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  delete?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  connect?: Prisma.ArtCommentWhereUniqueInput | Prisma.ArtCommentWhereUniqueInput[]
+  update?: Prisma.ArtCommentUpdateWithWhereUniqueWithoutUserInput | Prisma.ArtCommentUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ArtCommentUpdateManyWithWhereWithoutUserInput | Prisma.ArtCommentUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ArtCommentScalarWhereInput | Prisma.ArtCommentScalarWhereInput[]
 }
 
 export type ArtCommentCreateNestedManyWithoutArtworkInput = {
@@ -381,12 +403,62 @@ export type ArtCommentUncheckedUpdateManyWithoutArtworkNestedInput = {
   deleteMany?: Prisma.ArtCommentScalarWhereInput | Prisma.ArtCommentScalarWhereInput[]
 }
 
-export type ArtCommentCreateWithoutArtworkInput = {
+export type ArtCommentCreateWithoutUserInput = {
   id?: string
-  userId: string
   content: string
   createdAt?: Date | string
-  user: string
+  artwork: Prisma.ArtworkCreateNestedOneWithoutCommentsInput
+}
+
+export type ArtCommentUncheckedCreateWithoutUserInput = {
+  id?: string
+  artworkId: string
+  content: string
+  createdAt?: Date | string
+}
+
+export type ArtCommentCreateOrConnectWithoutUserInput = {
+  where: Prisma.ArtCommentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ArtCommentCreateWithoutUserInput, Prisma.ArtCommentUncheckedCreateWithoutUserInput>
+}
+
+export type ArtCommentCreateManyUserInputEnvelope = {
+  data: Prisma.ArtCommentCreateManyUserInput | Prisma.ArtCommentCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ArtCommentUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ArtCommentWhereUniqueInput
+  update: Prisma.XOR<Prisma.ArtCommentUpdateWithoutUserInput, Prisma.ArtCommentUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ArtCommentCreateWithoutUserInput, Prisma.ArtCommentUncheckedCreateWithoutUserInput>
+}
+
+export type ArtCommentUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ArtCommentWhereUniqueInput
+  data: Prisma.XOR<Prisma.ArtCommentUpdateWithoutUserInput, Prisma.ArtCommentUncheckedUpdateWithoutUserInput>
+}
+
+export type ArtCommentUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.ArtCommentScalarWhereInput
+  data: Prisma.XOR<Prisma.ArtCommentUpdateManyMutationInput, Prisma.ArtCommentUncheckedUpdateManyWithoutUserInput>
+}
+
+export type ArtCommentScalarWhereInput = {
+  AND?: Prisma.ArtCommentScalarWhereInput | Prisma.ArtCommentScalarWhereInput[]
+  OR?: Prisma.ArtCommentScalarWhereInput[]
+  NOT?: Prisma.ArtCommentScalarWhereInput | Prisma.ArtCommentScalarWhereInput[]
+  id?: Prisma.StringFilter<"ArtComment"> | string
+  artworkId?: Prisma.StringFilter<"ArtComment"> | string
+  userId?: Prisma.StringFilter<"ArtComment"> | string
+  content?: Prisma.StringFilter<"ArtComment"> | string
+  createdAt?: Prisma.DateTimeFilter<"ArtComment"> | Date | string
+}
+
+export type ArtCommentCreateWithoutArtworkInput = {
+  id?: string
+  content: string
+  createdAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutArtCommentsInput
 }
 
 export type ArtCommentUncheckedCreateWithoutArtworkInput = {
@@ -394,7 +466,6 @@ export type ArtCommentUncheckedCreateWithoutArtworkInput = {
   userId: string
   content: string
   createdAt?: Date | string
-  user: string
 }
 
 export type ArtCommentCreateOrConnectWithoutArtworkInput = {
@@ -423,16 +494,32 @@ export type ArtCommentUpdateManyWithWhereWithoutArtworkInput = {
   data: Prisma.XOR<Prisma.ArtCommentUpdateManyMutationInput, Prisma.ArtCommentUncheckedUpdateManyWithoutArtworkInput>
 }
 
-export type ArtCommentScalarWhereInput = {
-  AND?: Prisma.ArtCommentScalarWhereInput | Prisma.ArtCommentScalarWhereInput[]
-  OR?: Prisma.ArtCommentScalarWhereInput[]
-  NOT?: Prisma.ArtCommentScalarWhereInput | Prisma.ArtCommentScalarWhereInput[]
-  id?: Prisma.StringFilter<"ArtComment"> | string
-  artworkId?: Prisma.StringFilter<"ArtComment"> | string
-  userId?: Prisma.StringFilter<"ArtComment"> | string
-  content?: Prisma.StringFilter<"ArtComment"> | string
-  createdAt?: Prisma.DateTimeFilter<"ArtComment"> | Date | string
-  user?: Prisma.StringFilter<"ArtComment"> | string
+export type ArtCommentCreateManyUserInput = {
+  id?: string
+  artworkId: string
+  content: string
+  createdAt?: Date | string
+}
+
+export type ArtCommentUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  artwork?: Prisma.ArtworkUpdateOneRequiredWithoutCommentsNestedInput
+}
+
+export type ArtCommentUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  artworkId?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ArtCommentUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  artworkId?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ArtCommentCreateManyArtworkInput = {
@@ -440,15 +527,13 @@ export type ArtCommentCreateManyArtworkInput = {
   userId: string
   content: string
   createdAt?: Date | string
-  user: string
 }
 
 export type ArtCommentUpdateWithoutArtworkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutArtCommentsNestedInput
 }
 
 export type ArtCommentUncheckedUpdateWithoutArtworkInput = {
@@ -456,7 +541,6 @@ export type ArtCommentUncheckedUpdateWithoutArtworkInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtCommentUncheckedUpdateManyWithoutArtworkInput = {
@@ -464,7 +548,6 @@ export type ArtCommentUncheckedUpdateManyWithoutArtworkInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -475,8 +558,8 @@ export type ArtCommentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   userId?: boolean
   content?: boolean
   createdAt?: boolean
-  user?: boolean
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artComment"]>
 
 export type ArtCommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -485,8 +568,8 @@ export type ArtCommentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   userId?: boolean
   content?: boolean
   createdAt?: boolean
-  user?: boolean
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artComment"]>
 
 export type ArtCommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -495,8 +578,8 @@ export type ArtCommentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   userId?: boolean
   content?: boolean
   createdAt?: boolean
-  user?: boolean
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artComment"]>
 
 export type ArtCommentSelectScalar = {
@@ -505,24 +588,27 @@ export type ArtCommentSelectScalar = {
   userId?: boolean
   content?: boolean
   createdAt?: boolean
-  user?: boolean
 }
 
-export type ArtCommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "artworkId" | "userId" | "content" | "createdAt" | "user", ExtArgs["result"]["artComment"]>
+export type ArtCommentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "artworkId" | "userId" | "content" | "createdAt", ExtArgs["result"]["artComment"]>
 export type ArtCommentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ArtCommentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ArtCommentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ArtCommentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ArtComment"
   objects: {
     artwork: Prisma.$ArtworkPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -530,7 +616,6 @@ export type $ArtCommentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     userId: string
     content: string
     createdAt: Date
-    user: string
   }, ExtArgs["result"]["artComment"]>
   composites: {}
 }
@@ -926,6 +1011,7 @@ readonly fields: ArtCommentFieldRefs;
 export interface Prisma__ArtCommentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   artwork<T extends Prisma.ArtworkDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ArtworkDefaultArgs<ExtArgs>>): Prisma.Prisma__ArtworkClient<runtime.Types.Result.GetResult<Prisma.$ArtworkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -960,7 +1046,6 @@ export interface ArtCommentFieldRefs {
   readonly userId: Prisma.FieldRef<"ArtComment", 'String'>
   readonly content: Prisma.FieldRef<"ArtComment", 'String'>
   readonly createdAt: Prisma.FieldRef<"ArtComment", 'DateTime'>
-  readonly user: Prisma.FieldRef<"ArtComment", 'String'>
 }
     
 

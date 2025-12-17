@@ -51,10 +51,14 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Series: 'Series',
+  User: 'User',
+  ComicSeries: 'ComicSeries',
   Episode: 'Episode',
   EpisodeImage: 'EpisodeImage',
-  Comment: 'Comment',
+  CommentComics: 'CommentComics',
+  WrittenSeries: 'WrittenSeries',
+  Chapter: 'Chapter',
+  CommentWritten: 'CommentWritten',
   Artwork: 'Artwork',
   ArtComment: 'ArtComment',
   ArtLike: 'ArtLike'
@@ -76,26 +80,36 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const SeriesScalarFieldEnum = {
+export const UserScalarFieldEnum = {
+  id: 'id',
+  username: 'username',
+  bio: 'bio',
+  avatarUrl: 'avatarUrl',
+  createdAt: 'createdAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const ComicSeriesScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
   coverUrl: 'coverUrl',
   genre: 'genre',
   creatorId: 'creatorId',
-  creatorName: 'creatorName',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type SeriesScalarFieldEnum = (typeof SeriesScalarFieldEnum)[keyof typeof SeriesScalarFieldEnum]
+export type ComicSeriesScalarFieldEnum = (typeof ComicSeriesScalarFieldEnum)[keyof typeof ComicSeriesScalarFieldEnum]
 
 
 export const EpisodeScalarFieldEnum = {
   id: 'id',
   title: 'title',
   number: 'number',
-  seriesId: 'seriesId',
+  c_seriesId: 'c_seriesId',
   createdAt: 'createdAt'
 } as const
 
@@ -112,16 +126,51 @@ export const EpisodeImageScalarFieldEnum = {
 export type EpisodeImageScalarFieldEnum = (typeof EpisodeImageScalarFieldEnum)[keyof typeof EpisodeImageScalarFieldEnum]
 
 
-export const CommentScalarFieldEnum = {
+export const CommentComicsScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   episodeId: 'episodeId',
   content: 'content',
-  createdAt: 'createdAt',
-  user: 'user'
+  createdAt: 'createdAt'
 } as const
 
-export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+export type CommentComicsScalarFieldEnum = (typeof CommentComicsScalarFieldEnum)[keyof typeof CommentComicsScalarFieldEnum]
+
+
+export const WrittenSeriesScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  coverUrl: 'coverUrl',
+  genre: 'genre',
+  creatorId: 'creatorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WrittenSeriesScalarFieldEnum = (typeof WrittenSeriesScalarFieldEnum)[keyof typeof WrittenSeriesScalarFieldEnum]
+
+
+export const ChapterScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  number: 'number',
+  w_seriesId: 'w_seriesId',
+  createdAt: 'createdAt'
+} as const
+
+export type ChapterScalarFieldEnum = (typeof ChapterScalarFieldEnum)[keyof typeof ChapterScalarFieldEnum]
+
+
+export const CommentWrittenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  chapterId: 'chapterId',
+  content: 'content',
+  createdAt: 'createdAt'
+} as const
+
+export type CommentWrittenScalarFieldEnum = (typeof CommentWrittenScalarFieldEnum)[keyof typeof CommentWrittenScalarFieldEnum]
 
 
 export const ArtworkScalarFieldEnum = {
@@ -130,9 +179,8 @@ export const ArtworkScalarFieldEnum = {
   description: 'description',
   imageUrl: 'imageUrl',
   tags: 'tags',
-  creatorId: 'creatorId',
   createdAt: 'createdAt',
-  creator: 'creator'
+  creatorId: 'creatorId'
 } as const
 
 export type ArtworkScalarFieldEnum = (typeof ArtworkScalarFieldEnum)[keyof typeof ArtworkScalarFieldEnum]
@@ -143,8 +191,7 @@ export const ArtCommentScalarFieldEnum = {
   artworkId: 'artworkId',
   userId: 'userId',
   content: 'content',
-  createdAt: 'createdAt',
-  user: 'user'
+  createdAt: 'createdAt'
 } as const
 
 export type ArtCommentScalarFieldEnum = (typeof ArtCommentScalarFieldEnum)[keyof typeof ArtCommentScalarFieldEnum]
@@ -153,8 +200,7 @@ export type ArtCommentScalarFieldEnum = (typeof ArtCommentScalarFieldEnum)[keyof
 export const ArtLikeScalarFieldEnum = {
   id: 'id',
   artworkId: 'artworkId',
-  userId: 'userId',
-  user: 'user'
+  userId: 'userId'
 } as const
 
 export type ArtLikeScalarFieldEnum = (typeof ArtLikeScalarFieldEnum)[keyof typeof ArtLikeScalarFieldEnum]

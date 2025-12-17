@@ -28,21 +28,18 @@ export type ArtLikeMinAggregateOutputType = {
   id: string | null
   artworkId: string | null
   userId: string | null
-  user: string | null
 }
 
 export type ArtLikeMaxAggregateOutputType = {
   id: string | null
   artworkId: string | null
   userId: string | null
-  user: string | null
 }
 
 export type ArtLikeCountAggregateOutputType = {
   id: number
   artworkId: number
   userId: number
-  user: number
   _all: number
 }
 
@@ -51,21 +48,18 @@ export type ArtLikeMinAggregateInputType = {
   id?: true
   artworkId?: true
   userId?: true
-  user?: true
 }
 
 export type ArtLikeMaxAggregateInputType = {
   id?: true
   artworkId?: true
   userId?: true
-  user?: true
 }
 
 export type ArtLikeCountAggregateInputType = {
   id?: true
   artworkId?: true
   userId?: true
-  user?: true
   _all?: true
 }
 
@@ -145,7 +139,6 @@ export type ArtLikeGroupByOutputType = {
   id: string
   artworkId: string
   userId: string
-  user: string
   _count: ArtLikeCountAggregateOutputType | null
   _min: ArtLikeMinAggregateOutputType | null
   _max: ArtLikeMaxAggregateOutputType | null
@@ -173,16 +166,16 @@ export type ArtLikeWhereInput = {
   id?: Prisma.StringFilter<"ArtLike"> | string
   artworkId?: Prisma.StringFilter<"ArtLike"> | string
   userId?: Prisma.StringFilter<"ArtLike"> | string
-  user?: Prisma.StringFilter<"ArtLike"> | string
   artwork?: Prisma.XOR<Prisma.ArtworkScalarRelationFilter, Prisma.ArtworkWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type ArtLikeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   artworkId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  user?: Prisma.SortOrder
   artwork?: Prisma.ArtworkOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type ArtLikeWhereUniqueInput = Prisma.AtLeast<{
@@ -193,15 +186,14 @@ export type ArtLikeWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ArtLikeWhereInput | Prisma.ArtLikeWhereInput[]
   artworkId?: Prisma.StringFilter<"ArtLike"> | string
   userId?: Prisma.StringFilter<"ArtLike"> | string
-  user?: Prisma.StringFilter<"ArtLike"> | string
   artwork?: Prisma.XOR<Prisma.ArtworkScalarRelationFilter, Prisma.ArtworkWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "artworkId_userId">
 
 export type ArtLikeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   artworkId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  user?: Prisma.SortOrder
   _count?: Prisma.ArtLikeCountOrderByAggregateInput
   _max?: Prisma.ArtLikeMaxOrderByAggregateInput
   _min?: Prisma.ArtLikeMinOrderByAggregateInput
@@ -214,55 +206,46 @@ export type ArtLikeScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ArtLike"> | string
   artworkId?: Prisma.StringWithAggregatesFilter<"ArtLike"> | string
   userId?: Prisma.StringWithAggregatesFilter<"ArtLike"> | string
-  user?: Prisma.StringWithAggregatesFilter<"ArtLike"> | string
 }
 
 export type ArtLikeCreateInput = {
   id?: string
-  userId: string
-  user: string
   artwork: Prisma.ArtworkCreateNestedOneWithoutLikesInput
+  user: Prisma.UserCreateNestedOneWithoutArtLikesInput
 }
 
 export type ArtLikeUncheckedCreateInput = {
   id?: string
   artworkId: string
   userId: string
-  user: string
 }
 
 export type ArtLikeUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
   artwork?: Prisma.ArtworkUpdateOneRequiredWithoutLikesNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutArtLikesNestedInput
 }
 
 export type ArtLikeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   artworkId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtLikeCreateManyInput = {
   id?: string
   artworkId: string
   userId: string
-  user: string
 }
 
 export type ArtLikeUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtLikeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   artworkId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtLikeListRelationFilter = {
@@ -284,21 +267,60 @@ export type ArtLikeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   artworkId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  user?: Prisma.SortOrder
 }
 
 export type ArtLikeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   artworkId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  user?: Prisma.SortOrder
 }
 
 export type ArtLikeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   artworkId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  user?: Prisma.SortOrder
+}
+
+export type ArtLikeCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ArtLikeCreateWithoutUserInput, Prisma.ArtLikeUncheckedCreateWithoutUserInput> | Prisma.ArtLikeCreateWithoutUserInput[] | Prisma.ArtLikeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtLikeCreateOrConnectWithoutUserInput | Prisma.ArtLikeCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ArtLikeCreateManyUserInputEnvelope
+  connect?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+}
+
+export type ArtLikeUncheckedCreateNestedManyWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ArtLikeCreateWithoutUserInput, Prisma.ArtLikeUncheckedCreateWithoutUserInput> | Prisma.ArtLikeCreateWithoutUserInput[] | Prisma.ArtLikeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtLikeCreateOrConnectWithoutUserInput | Prisma.ArtLikeCreateOrConnectWithoutUserInput[]
+  createMany?: Prisma.ArtLikeCreateManyUserInputEnvelope
+  connect?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+}
+
+export type ArtLikeUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ArtLikeCreateWithoutUserInput, Prisma.ArtLikeUncheckedCreateWithoutUserInput> | Prisma.ArtLikeCreateWithoutUserInput[] | Prisma.ArtLikeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtLikeCreateOrConnectWithoutUserInput | Prisma.ArtLikeCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ArtLikeUpsertWithWhereUniqueWithoutUserInput | Prisma.ArtLikeUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ArtLikeCreateManyUserInputEnvelope
+  set?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  disconnect?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  delete?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  connect?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  update?: Prisma.ArtLikeUpdateWithWhereUniqueWithoutUserInput | Prisma.ArtLikeUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ArtLikeUpdateManyWithWhereWithoutUserInput | Prisma.ArtLikeUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ArtLikeScalarWhereInput | Prisma.ArtLikeScalarWhereInput[]
+}
+
+export type ArtLikeUncheckedUpdateManyWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ArtLikeCreateWithoutUserInput, Prisma.ArtLikeUncheckedCreateWithoutUserInput> | Prisma.ArtLikeCreateWithoutUserInput[] | Prisma.ArtLikeUncheckedCreateWithoutUserInput[]
+  connectOrCreate?: Prisma.ArtLikeCreateOrConnectWithoutUserInput | Prisma.ArtLikeCreateOrConnectWithoutUserInput[]
+  upsert?: Prisma.ArtLikeUpsertWithWhereUniqueWithoutUserInput | Prisma.ArtLikeUpsertWithWhereUniqueWithoutUserInput[]
+  createMany?: Prisma.ArtLikeCreateManyUserInputEnvelope
+  set?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  disconnect?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  delete?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  connect?: Prisma.ArtLikeWhereUniqueInput | Prisma.ArtLikeWhereUniqueInput[]
+  update?: Prisma.ArtLikeUpdateWithWhereUniqueWithoutUserInput | Prisma.ArtLikeUpdateWithWhereUniqueWithoutUserInput[]
+  updateMany?: Prisma.ArtLikeUpdateManyWithWhereWithoutUserInput | Prisma.ArtLikeUpdateManyWithWhereWithoutUserInput[]
+  deleteMany?: Prisma.ArtLikeScalarWhereInput | Prisma.ArtLikeScalarWhereInput[]
 }
 
 export type ArtLikeCreateNestedManyWithoutArtworkInput = {
@@ -343,16 +365,59 @@ export type ArtLikeUncheckedUpdateManyWithoutArtworkNestedInput = {
   deleteMany?: Prisma.ArtLikeScalarWhereInput | Prisma.ArtLikeScalarWhereInput[]
 }
 
+export type ArtLikeCreateWithoutUserInput = {
+  id?: string
+  artwork: Prisma.ArtworkCreateNestedOneWithoutLikesInput
+}
+
+export type ArtLikeUncheckedCreateWithoutUserInput = {
+  id?: string
+  artworkId: string
+}
+
+export type ArtLikeCreateOrConnectWithoutUserInput = {
+  where: Prisma.ArtLikeWhereUniqueInput
+  create: Prisma.XOR<Prisma.ArtLikeCreateWithoutUserInput, Prisma.ArtLikeUncheckedCreateWithoutUserInput>
+}
+
+export type ArtLikeCreateManyUserInputEnvelope = {
+  data: Prisma.ArtLikeCreateManyUserInput | Prisma.ArtLikeCreateManyUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type ArtLikeUpsertWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ArtLikeWhereUniqueInput
+  update: Prisma.XOR<Prisma.ArtLikeUpdateWithoutUserInput, Prisma.ArtLikeUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.ArtLikeCreateWithoutUserInput, Prisma.ArtLikeUncheckedCreateWithoutUserInput>
+}
+
+export type ArtLikeUpdateWithWhereUniqueWithoutUserInput = {
+  where: Prisma.ArtLikeWhereUniqueInput
+  data: Prisma.XOR<Prisma.ArtLikeUpdateWithoutUserInput, Prisma.ArtLikeUncheckedUpdateWithoutUserInput>
+}
+
+export type ArtLikeUpdateManyWithWhereWithoutUserInput = {
+  where: Prisma.ArtLikeScalarWhereInput
+  data: Prisma.XOR<Prisma.ArtLikeUpdateManyMutationInput, Prisma.ArtLikeUncheckedUpdateManyWithoutUserInput>
+}
+
+export type ArtLikeScalarWhereInput = {
+  AND?: Prisma.ArtLikeScalarWhereInput | Prisma.ArtLikeScalarWhereInput[]
+  OR?: Prisma.ArtLikeScalarWhereInput[]
+  NOT?: Prisma.ArtLikeScalarWhereInput | Prisma.ArtLikeScalarWhereInput[]
+  id?: Prisma.StringFilter<"ArtLike"> | string
+  artworkId?: Prisma.StringFilter<"ArtLike"> | string
+  userId?: Prisma.StringFilter<"ArtLike"> | string
+}
+
 export type ArtLikeCreateWithoutArtworkInput = {
   id?: string
-  userId: string
-  user: string
+  user: Prisma.UserCreateNestedOneWithoutArtLikesInput
 }
 
 export type ArtLikeUncheckedCreateWithoutArtworkInput = {
   id?: string
   userId: string
-  user: string
 }
 
 export type ArtLikeCreateOrConnectWithoutArtworkInput = {
@@ -381,38 +446,44 @@ export type ArtLikeUpdateManyWithWhereWithoutArtworkInput = {
   data: Prisma.XOR<Prisma.ArtLikeUpdateManyMutationInput, Prisma.ArtLikeUncheckedUpdateManyWithoutArtworkInput>
 }
 
-export type ArtLikeScalarWhereInput = {
-  AND?: Prisma.ArtLikeScalarWhereInput | Prisma.ArtLikeScalarWhereInput[]
-  OR?: Prisma.ArtLikeScalarWhereInput[]
-  NOT?: Prisma.ArtLikeScalarWhereInput | Prisma.ArtLikeScalarWhereInput[]
-  id?: Prisma.StringFilter<"ArtLike"> | string
-  artworkId?: Prisma.StringFilter<"ArtLike"> | string
-  userId?: Prisma.StringFilter<"ArtLike"> | string
-  user?: Prisma.StringFilter<"ArtLike"> | string
+export type ArtLikeCreateManyUserInput = {
+  id?: string
+  artworkId: string
+}
+
+export type ArtLikeUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  artwork?: Prisma.ArtworkUpdateOneRequiredWithoutLikesNestedInput
+}
+
+export type ArtLikeUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  artworkId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ArtLikeUncheckedUpdateManyWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  artworkId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtLikeCreateManyArtworkInput = {
   id?: string
   userId: string
-  user: string
 }
 
 export type ArtLikeUpdateWithoutArtworkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
+  user?: Prisma.UserUpdateOneRequiredWithoutArtLikesNestedInput
 }
 
 export type ArtLikeUncheckedUpdateWithoutArtworkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtLikeUncheckedUpdateManyWithoutArtworkInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -421,54 +492,56 @@ export type ArtLikeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   artworkId?: boolean
   userId?: boolean
-  user?: boolean
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artLike"]>
 
 export type ArtLikeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   artworkId?: boolean
   userId?: boolean
-  user?: boolean
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artLike"]>
 
 export type ArtLikeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   artworkId?: boolean
   userId?: boolean
-  user?: boolean
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artLike"]>
 
 export type ArtLikeSelectScalar = {
   id?: boolean
   artworkId?: boolean
   userId?: boolean
-  user?: boolean
 }
 
-export type ArtLikeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "artworkId" | "userId" | "user", ExtArgs["result"]["artLike"]>
+export type ArtLikeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "artworkId" | "userId", ExtArgs["result"]["artLike"]>
 export type ArtLikeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ArtLikeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 export type ArtLikeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
 
 export type $ArtLikePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ArtLike"
   objects: {
     artwork: Prisma.$ArtworkPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     artworkId: string
     userId: string
-    user: string
   }, ExtArgs["result"]["artLike"]>
   composites: {}
 }
@@ -864,6 +937,7 @@ readonly fields: ArtLikeFieldRefs;
 export interface Prisma__ArtLikeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   artwork<T extends Prisma.ArtworkDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ArtworkDefaultArgs<ExtArgs>>): Prisma.Prisma__ArtworkClient<runtime.Types.Result.GetResult<Prisma.$ArtworkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -896,7 +970,6 @@ export interface ArtLikeFieldRefs {
   readonly id: Prisma.FieldRef<"ArtLike", 'String'>
   readonly artworkId: Prisma.FieldRef<"ArtLike", 'String'>
   readonly userId: Prisma.FieldRef<"ArtLike", 'String'>
-  readonly user: Prisma.FieldRef<"ArtLike", 'String'>
 }
     
 

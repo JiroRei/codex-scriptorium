@@ -17,11 +17,10 @@ export async function createSeries(formData: FormData) {
     throw new Error("Invalid title")
   }
 
-  await prisma.series.create({
+  await prisma.comicSeries.create({
     data: {
       title,
       creatorId: userId,
-      creatorName: user.username ?? "unknown",
     },
   })
 

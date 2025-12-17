@@ -6,35 +6,42 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  output   = "../src/app/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-// model User {
-//   id        String   @id    // Clerk user ID
-//   username  String
-//   avatarUrl String?
-//   createdAt DateTime @default(now())
 
-//   series     Series[]
-//   comments   Comment[]
-//   likes      Like[]
-//   artworks   Artwork[]
-//   artLikes   ArtLike[]
-//   artComments ArtComment[]
-// }
+model User {
+  id              String    @id // Clerk userId
+  username        String    @unique
+  bio             String?
+  avatarUrl       String
+  createdAt       DateTime  @default(now())
 
-model Series {
+  comicseries     ComicSeries[]
+  writtenseries   WrittenSeries[]
+  artworks        Artwork[]
+  c_comments      CommentComics[]
+  w_comments      CommentWritten[]
+  artComments     ArtComment[]
+  artLikes        ArtLike[]
+}
+
+
+
+model ComicSeries {
   id          String      @id @default(cuid())
   title       String
   description String?
   coverUrl    String?
   genre       String?
   creatorId   String
-  creatorName String
+  @@index([creatorId])
+  creator     User @relation(fields: [creatorId], references: [id])
+
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
@@ -42,16 +49,18 @@ model Series {
 }
 
 model Episode {
-  id        String       @id @default(cuid())
-  title     String
-  number    Int
-  seriesId  String
-  createdAt DateTime  @default(now())
+  id          String       @id @default(cuid())
+  title       String
+  number      Int
+  c_seriesId  String
+  @@unique([c_seriesId, number])
+  @@index([c_seriesId])
+  createdAt   DateTime  @default(now())
   
-  series    Series    @relation(fields: [seriesId], references: [id])
+  c_series  ComicSeries    @relation(fields: [c_seriesId], references: [id])
   images    EpisodeImage[]
 
-  comments  Comment[]
+  comments  CommentComics[]
 }
 
 model EpisodeImage {
@@ -63,49 +72,96 @@ model EpisodeImage {
   episode   Episode  @relation(fields: [episodeId], references: [id])
 }
 
-model Comment {
-  id        String       @id @default(cuid())
+model CommentComics {
+  id        String      @id @default(cuid())
   userId    String
+  
   episodeId String
   content   String
-  createdAt DateTime  @default(now())
+  @@index([userId])
+  @@index([episodeId])
+  
+  createdAt DateTime    @default(now())
 
-  user      String
-  episode   Episode @relation(fields: [episodeId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
+  episode   Episode     @relation(fields: [episodeId], references: [id])
+}
+
+model WrittenSeries {
+  id          String @id @default(cuid())
+  title       String
+  description String?
+  coverUrl    String?
+  genre       String?
+  creatorId   String
+  creator     User @relation(fields: [creatorId], references: [id])
+
+  chapters    Chapter[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime   @updatedAt
+
+}
+
+model Chapter {
+  id          String @id @default(cuid())
+  title       String
+  number      Int
+  w_seriesId  String
+  @@unique([w_seriesId, number])
+  
+  w_series    WrittenSeries @relation(fields: [w_seriesId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  comments    CommentWritten[]
+}
+
+model CommentWritten {
+  id          String      @id @default(cuid())
+  userId      String
+  
+  chapterId   String
+  content     String
+  
+  createdAt   DateTime    @default(now())
+
+  user        User        @relation(fields: [userId], references: [id])
+  chapter     Chapter     @relation(fields: [chapterId], references: [id])
 }
 
 model Artwork {
-  id         String      @id @default(cuid())
-  title      String
+  id          String      @id @default(cuid())
+  title       String
   description String?
-  imageUrl   String   
-  tags       String[]
-  creatorId  String    
-  createdAt  DateTime  @default(now())
+  imageUrl    String   
+  tags        String[]  
+  createdAt   DateTime  @default(now())
 
-  creator    String
-  comments   ArtComment[]
-  likes      ArtLike[]
+  creatorId   String
+  creator     User      @relation(fields: [creatorId], references: [id])
+  comments    ArtComment[]
+  likes       ArtLike[]
 }
 
 model ArtComment {
-  id        String     @id @default(cuid())
-  artworkId String
-  userId    String
-  content   String
-  createdAt DateTime @default(now())
+  id          String     @id @default(cuid())
+  artworkId   String
+  userId      String
+  content     String
+  createdAt   DateTime @default(now())
 
-  artwork Artwork @relation(fields: [artworkId], references: [id])
-  user    String
+  artwork     Artwork @relation(fields: [artworkId], references: [id])
+  user        User @relation(fields: [userId], references: [id])
 }
 
 model ArtLike {
-  id        String     @id @default(cuid())
-  artworkId String
-  userId    String
+  id          String     @id @default(cuid())
+  artworkId   String
+  userId      String
 
-  artwork Artwork @relation(fields: [artworkId], references: [id])
-  user    String
+  artwork     Artwork @relation(fields: [artworkId], references: [id])
+  user        User @relation(fields: [userId], references: [id])
+
 
   @@unique([artworkId, userId])
 }

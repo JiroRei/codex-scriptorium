@@ -8,10 +8,14 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Series'
+export type * from './models/User'
+export type * from './models/ComicSeries'
 export type * from './models/Episode'
 export type * from './models/EpisodeImage'
-export type * from './models/Comment'
+export type * from './models/CommentComics'
+export type * from './models/WrittenSeries'
+export type * from './models/Chapter'
+export type * from './models/CommentWritten'
 export type * from './models/Artwork'
 export type * from './models/ArtComment'
 export type * from './models/ArtLike'

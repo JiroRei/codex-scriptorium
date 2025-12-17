@@ -29,9 +29,8 @@ export type ArtworkMinAggregateOutputType = {
   title: string | null
   description: string | null
   imageUrl: string | null
-  creatorId: string | null
   createdAt: Date | null
-  creator: string | null
+  creatorId: string | null
 }
 
 export type ArtworkMaxAggregateOutputType = {
@@ -39,9 +38,8 @@ export type ArtworkMaxAggregateOutputType = {
   title: string | null
   description: string | null
   imageUrl: string | null
-  creatorId: string | null
   createdAt: Date | null
-  creator: string | null
+  creatorId: string | null
 }
 
 export type ArtworkCountAggregateOutputType = {
@@ -50,9 +48,8 @@ export type ArtworkCountAggregateOutputType = {
   description: number
   imageUrl: number
   tags: number
-  creatorId: number
   createdAt: number
-  creator: number
+  creatorId: number
   _all: number
 }
 
@@ -62,9 +59,8 @@ export type ArtworkMinAggregateInputType = {
   title?: true
   description?: true
   imageUrl?: true
-  creatorId?: true
   createdAt?: true
-  creator?: true
+  creatorId?: true
 }
 
 export type ArtworkMaxAggregateInputType = {
@@ -72,9 +68,8 @@ export type ArtworkMaxAggregateInputType = {
   title?: true
   description?: true
   imageUrl?: true
-  creatorId?: true
   createdAt?: true
-  creator?: true
+  creatorId?: true
 }
 
 export type ArtworkCountAggregateInputType = {
@@ -83,9 +78,8 @@ export type ArtworkCountAggregateInputType = {
   description?: true
   imageUrl?: true
   tags?: true
-  creatorId?: true
   createdAt?: true
-  creator?: true
+  creatorId?: true
   _all?: true
 }
 
@@ -167,9 +161,8 @@ export type ArtworkGroupByOutputType = {
   description: string | null
   imageUrl: string
   tags: string[]
-  creatorId: string
   createdAt: Date
-  creator: string
+  creatorId: string
   _count: ArtworkCountAggregateOutputType | null
   _min: ArtworkMinAggregateOutputType | null
   _max: ArtworkMaxAggregateOutputType | null
@@ -199,9 +192,9 @@ export type ArtworkWhereInput = {
   description?: Prisma.StringNullableFilter<"Artwork"> | string | null
   imageUrl?: Prisma.StringFilter<"Artwork"> | string
   tags?: Prisma.StringNullableListFilter<"Artwork">
-  creatorId?: Prisma.StringFilter<"Artwork"> | string
   createdAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string
-  creator?: Prisma.StringFilter<"Artwork"> | string
+  creatorId?: Prisma.StringFilter<"Artwork"> | string
+  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   comments?: Prisma.ArtCommentListRelationFilter
   likes?: Prisma.ArtLikeListRelationFilter
 }
@@ -212,9 +205,9 @@ export type ArtworkOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
-  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  creator?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
+  creator?: Prisma.UserOrderByWithRelationInput
   comments?: Prisma.ArtCommentOrderByRelationAggregateInput
   likes?: Prisma.ArtLikeOrderByRelationAggregateInput
 }
@@ -228,9 +221,9 @@ export type ArtworkWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Artwork"> | string | null
   imageUrl?: Prisma.StringFilter<"Artwork"> | string
   tags?: Prisma.StringNullableListFilter<"Artwork">
-  creatorId?: Prisma.StringFilter<"Artwork"> | string
   createdAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string
-  creator?: Prisma.StringFilter<"Artwork"> | string
+  creatorId?: Prisma.StringFilter<"Artwork"> | string
+  creator?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   comments?: Prisma.ArtCommentListRelationFilter
   likes?: Prisma.ArtLikeListRelationFilter
 }, "id">
@@ -241,9 +234,8 @@ export type ArtworkOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
-  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  creator?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
   _count?: Prisma.ArtworkCountOrderByAggregateInput
   _max?: Prisma.ArtworkMaxOrderByAggregateInput
   _min?: Prisma.ArtworkMinOrderByAggregateInput
@@ -258,9 +250,8 @@ export type ArtworkScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Artwork"> | string | null
   imageUrl?: Prisma.StringWithAggregatesFilter<"Artwork"> | string
   tags?: Prisma.StringNullableListFilter<"Artwork">
-  creatorId?: Prisma.StringWithAggregatesFilter<"Artwork"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Artwork"> | Date | string
-  creator?: Prisma.StringWithAggregatesFilter<"Artwork"> | string
+  creatorId?: Prisma.StringWithAggregatesFilter<"Artwork"> | string
 }
 
 export type ArtworkCreateInput = {
@@ -269,9 +260,8 @@ export type ArtworkCreateInput = {
   description?: string | null
   imageUrl: string
   tags?: Prisma.ArtworkCreatetagsInput | string[]
-  creatorId: string
   createdAt?: Date | string
-  creator: string
+  creator: Prisma.UserCreateNestedOneWithoutArtworksInput
   comments?: Prisma.ArtCommentCreateNestedManyWithoutArtworkInput
   likes?: Prisma.ArtLikeCreateNestedManyWithoutArtworkInput
 }
@@ -282,9 +272,8 @@ export type ArtworkUncheckedCreateInput = {
   description?: string | null
   imageUrl: string
   tags?: Prisma.ArtworkCreatetagsInput | string[]
-  creatorId: string
   createdAt?: Date | string
-  creator: string
+  creatorId: string
   comments?: Prisma.ArtCommentUncheckedCreateNestedManyWithoutArtworkInput
   likes?: Prisma.ArtLikeUncheckedCreateNestedManyWithoutArtworkInput
 }
@@ -295,9 +284,8 @@ export type ArtworkUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
+  creator?: Prisma.UserUpdateOneRequiredWithoutArtworksNestedInput
   comments?: Prisma.ArtCommentUpdateManyWithoutArtworkNestedInput
   likes?: Prisma.ArtLikeUpdateManyWithoutArtworkNestedInput
 }
@@ -308,9 +296,8 @@ export type ArtworkUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   comments?: Prisma.ArtCommentUncheckedUpdateManyWithoutArtworkNestedInput
   likes?: Prisma.ArtLikeUncheckedUpdateManyWithoutArtworkNestedInput
 }
@@ -321,9 +308,8 @@ export type ArtworkCreateManyInput = {
   description?: string | null
   imageUrl: string
   tags?: Prisma.ArtworkCreatetagsInput | string[]
-  creatorId: string
   createdAt?: Date | string
-  creator: string
+  creatorId: string
 }
 
 export type ArtworkUpdateManyMutationInput = {
@@ -332,9 +318,7 @@ export type ArtworkUpdateManyMutationInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ArtworkUncheckedUpdateManyInput = {
@@ -343,9 +327,18 @@ export type ArtworkUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type ArtworkListRelationFilter = {
+  every?: Prisma.ArtworkWhereInput
+  some?: Prisma.ArtworkWhereInput
+  none?: Prisma.ArtworkWhereInput
+}
+
+export type ArtworkOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StringNullableListFilter<$PrismaModel = never> = {
@@ -362,9 +355,8 @@ export type ArtworkCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   tags?: Prisma.SortOrder
-  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  creator?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
 }
 
 export type ArtworkMaxOrderByAggregateInput = {
@@ -372,9 +364,8 @@ export type ArtworkMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
-  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  creator?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
 }
 
 export type ArtworkMinOrderByAggregateInput = {
@@ -382,14 +373,55 @@ export type ArtworkMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
-  creatorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  creator?: Prisma.SortOrder
+  creatorId?: Prisma.SortOrder
 }
 
 export type ArtworkScalarRelationFilter = {
   is?: Prisma.ArtworkWhereInput
   isNot?: Prisma.ArtworkWhereInput
+}
+
+export type ArtworkCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.ArtworkCreateWithoutCreatorInput, Prisma.ArtworkUncheckedCreateWithoutCreatorInput> | Prisma.ArtworkCreateWithoutCreatorInput[] | Prisma.ArtworkUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.ArtworkCreateOrConnectWithoutCreatorInput | Prisma.ArtworkCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.ArtworkCreateManyCreatorInputEnvelope
+  connect?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+}
+
+export type ArtworkUncheckedCreateNestedManyWithoutCreatorInput = {
+  create?: Prisma.XOR<Prisma.ArtworkCreateWithoutCreatorInput, Prisma.ArtworkUncheckedCreateWithoutCreatorInput> | Prisma.ArtworkCreateWithoutCreatorInput[] | Prisma.ArtworkUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.ArtworkCreateOrConnectWithoutCreatorInput | Prisma.ArtworkCreateOrConnectWithoutCreatorInput[]
+  createMany?: Prisma.ArtworkCreateManyCreatorInputEnvelope
+  connect?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+}
+
+export type ArtworkUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.ArtworkCreateWithoutCreatorInput, Prisma.ArtworkUncheckedCreateWithoutCreatorInput> | Prisma.ArtworkCreateWithoutCreatorInput[] | Prisma.ArtworkUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.ArtworkCreateOrConnectWithoutCreatorInput | Prisma.ArtworkCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.ArtworkUpsertWithWhereUniqueWithoutCreatorInput | Prisma.ArtworkUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.ArtworkCreateManyCreatorInputEnvelope
+  set?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  disconnect?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  delete?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  connect?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  update?: Prisma.ArtworkUpdateWithWhereUniqueWithoutCreatorInput | Prisma.ArtworkUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.ArtworkUpdateManyWithWhereWithoutCreatorInput | Prisma.ArtworkUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.ArtworkScalarWhereInput | Prisma.ArtworkScalarWhereInput[]
+}
+
+export type ArtworkUncheckedUpdateManyWithoutCreatorNestedInput = {
+  create?: Prisma.XOR<Prisma.ArtworkCreateWithoutCreatorInput, Prisma.ArtworkUncheckedCreateWithoutCreatorInput> | Prisma.ArtworkCreateWithoutCreatorInput[] | Prisma.ArtworkUncheckedCreateWithoutCreatorInput[]
+  connectOrCreate?: Prisma.ArtworkCreateOrConnectWithoutCreatorInput | Prisma.ArtworkCreateOrConnectWithoutCreatorInput[]
+  upsert?: Prisma.ArtworkUpsertWithWhereUniqueWithoutCreatorInput | Prisma.ArtworkUpsertWithWhereUniqueWithoutCreatorInput[]
+  createMany?: Prisma.ArtworkCreateManyCreatorInputEnvelope
+  set?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  disconnect?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  delete?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  connect?: Prisma.ArtworkWhereUniqueInput | Prisma.ArtworkWhereUniqueInput[]
+  update?: Prisma.ArtworkUpdateWithWhereUniqueWithoutCreatorInput | Prisma.ArtworkUpdateWithWhereUniqueWithoutCreatorInput[]
+  updateMany?: Prisma.ArtworkUpdateManyWithWhereWithoutCreatorInput | Prisma.ArtworkUpdateManyWithWhereWithoutCreatorInput[]
+  deleteMany?: Prisma.ArtworkScalarWhereInput | Prisma.ArtworkScalarWhereInput[]
 }
 
 export type ArtworkCreatetagsInput = {
@@ -429,15 +461,75 @@ export type ArtworkUpdateOneRequiredWithoutLikesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ArtworkUpdateToOneWithWhereWithoutLikesInput, Prisma.ArtworkUpdateWithoutLikesInput>, Prisma.ArtworkUncheckedUpdateWithoutLikesInput>
 }
 
+export type ArtworkCreateWithoutCreatorInput = {
+  id?: string
+  title: string
+  description?: string | null
+  imageUrl: string
+  tags?: Prisma.ArtworkCreatetagsInput | string[]
+  createdAt?: Date | string
+  comments?: Prisma.ArtCommentCreateNestedManyWithoutArtworkInput
+  likes?: Prisma.ArtLikeCreateNestedManyWithoutArtworkInput
+}
+
+export type ArtworkUncheckedCreateWithoutCreatorInput = {
+  id?: string
+  title: string
+  description?: string | null
+  imageUrl: string
+  tags?: Prisma.ArtworkCreatetagsInput | string[]
+  createdAt?: Date | string
+  comments?: Prisma.ArtCommentUncheckedCreateNestedManyWithoutArtworkInput
+  likes?: Prisma.ArtLikeUncheckedCreateNestedManyWithoutArtworkInput
+}
+
+export type ArtworkCreateOrConnectWithoutCreatorInput = {
+  where: Prisma.ArtworkWhereUniqueInput
+  create: Prisma.XOR<Prisma.ArtworkCreateWithoutCreatorInput, Prisma.ArtworkUncheckedCreateWithoutCreatorInput>
+}
+
+export type ArtworkCreateManyCreatorInputEnvelope = {
+  data: Prisma.ArtworkCreateManyCreatorInput | Prisma.ArtworkCreateManyCreatorInput[]
+  skipDuplicates?: boolean
+}
+
+export type ArtworkUpsertWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.ArtworkWhereUniqueInput
+  update: Prisma.XOR<Prisma.ArtworkUpdateWithoutCreatorInput, Prisma.ArtworkUncheckedUpdateWithoutCreatorInput>
+  create: Prisma.XOR<Prisma.ArtworkCreateWithoutCreatorInput, Prisma.ArtworkUncheckedCreateWithoutCreatorInput>
+}
+
+export type ArtworkUpdateWithWhereUniqueWithoutCreatorInput = {
+  where: Prisma.ArtworkWhereUniqueInput
+  data: Prisma.XOR<Prisma.ArtworkUpdateWithoutCreatorInput, Prisma.ArtworkUncheckedUpdateWithoutCreatorInput>
+}
+
+export type ArtworkUpdateManyWithWhereWithoutCreatorInput = {
+  where: Prisma.ArtworkScalarWhereInput
+  data: Prisma.XOR<Prisma.ArtworkUpdateManyMutationInput, Prisma.ArtworkUncheckedUpdateManyWithoutCreatorInput>
+}
+
+export type ArtworkScalarWhereInput = {
+  AND?: Prisma.ArtworkScalarWhereInput | Prisma.ArtworkScalarWhereInput[]
+  OR?: Prisma.ArtworkScalarWhereInput[]
+  NOT?: Prisma.ArtworkScalarWhereInput | Prisma.ArtworkScalarWhereInput[]
+  id?: Prisma.StringFilter<"Artwork"> | string
+  title?: Prisma.StringFilter<"Artwork"> | string
+  description?: Prisma.StringNullableFilter<"Artwork"> | string | null
+  imageUrl?: Prisma.StringFilter<"Artwork"> | string
+  tags?: Prisma.StringNullableListFilter<"Artwork">
+  createdAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string
+  creatorId?: Prisma.StringFilter<"Artwork"> | string
+}
+
 export type ArtworkCreateWithoutCommentsInput = {
   id?: string
   title: string
   description?: string | null
   imageUrl: string
   tags?: Prisma.ArtworkCreatetagsInput | string[]
-  creatorId: string
   createdAt?: Date | string
-  creator: string
+  creator: Prisma.UserCreateNestedOneWithoutArtworksInput
   likes?: Prisma.ArtLikeCreateNestedManyWithoutArtworkInput
 }
 
@@ -447,9 +539,8 @@ export type ArtworkUncheckedCreateWithoutCommentsInput = {
   description?: string | null
   imageUrl: string
   tags?: Prisma.ArtworkCreatetagsInput | string[]
-  creatorId: string
   createdAt?: Date | string
-  creator: string
+  creatorId: string
   likes?: Prisma.ArtLikeUncheckedCreateNestedManyWithoutArtworkInput
 }
 
@@ -475,9 +566,8 @@ export type ArtworkUpdateWithoutCommentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
+  creator?: Prisma.UserUpdateOneRequiredWithoutArtworksNestedInput
   likes?: Prisma.ArtLikeUpdateManyWithoutArtworkNestedInput
 }
 
@@ -487,9 +577,8 @@ export type ArtworkUncheckedUpdateWithoutCommentsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   likes?: Prisma.ArtLikeUncheckedUpdateManyWithoutArtworkNestedInput
 }
 
@@ -499,9 +588,8 @@ export type ArtworkCreateWithoutLikesInput = {
   description?: string | null
   imageUrl: string
   tags?: Prisma.ArtworkCreatetagsInput | string[]
-  creatorId: string
   createdAt?: Date | string
-  creator: string
+  creator: Prisma.UserCreateNestedOneWithoutArtworksInput
   comments?: Prisma.ArtCommentCreateNestedManyWithoutArtworkInput
 }
 
@@ -511,9 +599,8 @@ export type ArtworkUncheckedCreateWithoutLikesInput = {
   description?: string | null
   imageUrl: string
   tags?: Prisma.ArtworkCreatetagsInput | string[]
-  creatorId: string
   createdAt?: Date | string
-  creator: string
+  creatorId: string
   comments?: Prisma.ArtCommentUncheckedCreateNestedManyWithoutArtworkInput
 }
 
@@ -539,9 +626,8 @@ export type ArtworkUpdateWithoutLikesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
+  creator?: Prisma.UserUpdateOneRequiredWithoutArtworksNestedInput
   comments?: Prisma.ArtCommentUpdateManyWithoutArtworkNestedInput
 }
 
@@ -551,10 +637,49 @@ export type ArtworkUncheckedUpdateWithoutLikesInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   tags?: Prisma.ArtworkUpdatetagsInput | string[]
-  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  creator?: Prisma.StringFieldUpdateOperationsInput | string
+  creatorId?: Prisma.StringFieldUpdateOperationsInput | string
   comments?: Prisma.ArtCommentUncheckedUpdateManyWithoutArtworkNestedInput
+}
+
+export type ArtworkCreateManyCreatorInput = {
+  id?: string
+  title: string
+  description?: string | null
+  imageUrl: string
+  tags?: Prisma.ArtworkCreatetagsInput | string[]
+  createdAt?: Date | string
+}
+
+export type ArtworkUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  tags?: Prisma.ArtworkUpdatetagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ArtCommentUpdateManyWithoutArtworkNestedInput
+  likes?: Prisma.ArtLikeUpdateManyWithoutArtworkNestedInput
+}
+
+export type ArtworkUncheckedUpdateWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  tags?: Prisma.ArtworkUpdatetagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ArtCommentUncheckedUpdateManyWithoutArtworkNestedInput
+  likes?: Prisma.ArtLikeUncheckedUpdateManyWithoutArtworkNestedInput
+}
+
+export type ArtworkUncheckedUpdateManyWithoutCreatorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  tags?: Prisma.ArtworkUpdatetagsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -603,9 +728,9 @@ export type ArtworkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   description?: boolean
   imageUrl?: boolean
   tags?: boolean
-  creatorId?: boolean
   createdAt?: boolean
-  creator?: boolean
+  creatorId?: boolean
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   comments?: boolean | Prisma.Artwork$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.Artwork$likesArgs<ExtArgs>
   _count?: boolean | Prisma.ArtworkCountOutputTypeDefaultArgs<ExtArgs>
@@ -617,9 +742,9 @@ export type ArtworkSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   imageUrl?: boolean
   tags?: boolean
-  creatorId?: boolean
   createdAt?: boolean
-  creator?: boolean
+  creatorId?: boolean
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artwork"]>
 
 export type ArtworkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -628,9 +753,9 @@ export type ArtworkSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   description?: boolean
   imageUrl?: boolean
   tags?: boolean
-  creatorId?: boolean
   createdAt?: boolean
-  creator?: boolean
+  creatorId?: boolean
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["artwork"]>
 
 export type ArtworkSelectScalar = {
@@ -639,23 +764,28 @@ export type ArtworkSelectScalar = {
   description?: boolean
   imageUrl?: boolean
   tags?: boolean
-  creatorId?: boolean
   createdAt?: boolean
-  creator?: boolean
+  creatorId?: boolean
 }
 
-export type ArtworkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "imageUrl" | "tags" | "creatorId" | "createdAt" | "creator", ExtArgs["result"]["artwork"]>
+export type ArtworkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "imageUrl" | "tags" | "createdAt" | "creatorId", ExtArgs["result"]["artwork"]>
 export type ArtworkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   comments?: boolean | Prisma.Artwork$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.Artwork$likesArgs<ExtArgs>
   _count?: boolean | Prisma.ArtworkCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ArtworkIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ArtworkIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ArtworkIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type ArtworkIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  creator?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $ArtworkPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Artwork"
   objects: {
+    creator: Prisma.$UserPayload<ExtArgs>
     comments: Prisma.$ArtCommentPayload<ExtArgs>[]
     likes: Prisma.$ArtLikePayload<ExtArgs>[]
   }
@@ -665,9 +795,8 @@ export type $ArtworkPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     description: string | null
     imageUrl: string
     tags: string[]
-    creatorId: string
     createdAt: Date
-    creator: string
+    creatorId: string
   }, ExtArgs["result"]["artwork"]>
   composites: {}
 }
@@ -1062,6 +1191,7 @@ readonly fields: ArtworkFieldRefs;
  */
 export interface Prisma__ArtworkClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  creator<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   comments<T extends Prisma.Artwork$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artwork$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArtCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   likes<T extends Prisma.Artwork$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artwork$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArtLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1098,9 +1228,8 @@ export interface ArtworkFieldRefs {
   readonly description: Prisma.FieldRef<"Artwork", 'String'>
   readonly imageUrl: Prisma.FieldRef<"Artwork", 'String'>
   readonly tags: Prisma.FieldRef<"Artwork", 'String[]'>
-  readonly creatorId: Prisma.FieldRef<"Artwork", 'String'>
   readonly createdAt: Prisma.FieldRef<"Artwork", 'DateTime'>
-  readonly creator: Prisma.FieldRef<"Artwork", 'String'>
+  readonly creatorId: Prisma.FieldRef<"Artwork", 'String'>
 }
     
 
@@ -1350,6 +1479,10 @@ export type ArtworkCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.ArtworkCreateManyInput | Prisma.ArtworkCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ArtworkIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1420,6 +1553,10 @@ export type ArtworkUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Artworks to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ArtworkIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

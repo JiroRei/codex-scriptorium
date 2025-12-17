@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\n// model User {\n//   id        String   @id    // Clerk user ID\n//   username  String\n//   avatarUrl String?\n//   createdAt DateTime @default(now())\n\n//   series     Series[]\n//   comments   Comment[]\n//   likes      Like[]\n//   artworks   Artwork[]\n//   artLikes   ArtLike[]\n//   artComments ArtComment[]\n// }\n\nmodel Series {\n  id          String   @id @default(cuid())\n  title       String\n  description String?\n  coverUrl    String?\n  genre       String?\n  creatorId   String\n  creatorName String\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  episodes Episode[]\n}\n\nmodel Episode {\n  id        String   @id @default(cuid())\n  title     String\n  number    Int\n  seriesId  String\n  createdAt DateTime @default(now())\n\n  series Series         @relation(fields: [seriesId], references: [id])\n  images EpisodeImage[]\n\n  comments Comment[]\n}\n\nmodel EpisodeImage {\n  id       String @id @default(cuid())\n  imageUrl String\n  order    Int\n\n  episodeId String\n  episode   Episode @relation(fields: [episodeId], references: [id])\n}\n\nmodel Comment {\n  id        String   @id @default(cuid())\n  userId    String\n  episodeId String\n  content   String\n  createdAt DateTime @default(now())\n\n  user    String\n  episode Episode @relation(fields: [episodeId], references: [id])\n}\n\nmodel Artwork {\n  id          String   @id @default(cuid())\n  title       String\n  description String?\n  imageUrl    String\n  tags        String[]\n  creatorId   String\n  createdAt   DateTime @default(now())\n\n  creator  String\n  comments ArtComment[]\n  likes    ArtLike[]\n}\n\nmodel ArtComment {\n  id        String   @id @default(cuid())\n  artworkId String\n  userId    String\n  content   String\n  createdAt DateTime @default(now())\n\n  artwork Artwork @relation(fields: [artworkId], references: [id])\n  user    String\n}\n\nmodel ArtLike {\n  id        String @id @default(cuid())\n  artworkId String\n  userId    String\n\n  artwork Artwork @relation(fields: [artworkId], references: [id])\n  user    String\n\n  @@unique([artworkId, userId])\n}\n",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id        String   @id // Clerk userId\n  username  String   @unique\n  bio       String?\n  avatarUrl String\n  createdAt DateTime @default(now())\n\n  comicseries   ComicSeries[]\n  writtenseries WrittenSeries[]\n  artworks      Artwork[]\n  c_comments    CommentComics[]\n  w_comments    CommentWritten[]\n  artComments   ArtComment[]\n  artLikes      ArtLike[]\n}\n\nmodel ComicSeries {\n  id          String  @id @default(cuid())\n  title       String\n  description String?\n  coverUrl    String?\n  genre       String?\n  creatorId   String\n  creator     User    @relation(fields: [creatorId], references: [id])\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  episodes Episode[]\n\n  @@index([creatorId])\n}\n\nmodel Episode {\n  id         String   @id @default(cuid())\n  title      String\n  number     Int\n  c_seriesId String\n  createdAt  DateTime @default(now())\n\n  c_series ComicSeries    @relation(fields: [c_seriesId], references: [id])\n  images   EpisodeImage[]\n\n  comments CommentComics[]\n\n  @@unique([c_seriesId, number])\n  @@index([c_seriesId])\n}\n\nmodel EpisodeImage {\n  id       String @id @default(cuid())\n  imageUrl String\n  order    Int\n\n  episodeId String\n  episode   Episode @relation(fields: [episodeId], references: [id])\n}\n\nmodel CommentComics {\n  id     String @id @default(cuid())\n  userId String\n\n  episodeId String\n  content   String\n\n  createdAt DateTime @default(now())\n\n  user    User    @relation(fields: [userId], references: [id])\n  episode Episode @relation(fields: [episodeId], references: [id])\n\n  @@index([userId])\n  @@index([episodeId])\n}\n\nmodel WrittenSeries {\n  id          String  @id @default(cuid())\n  title       String\n  description String?\n  coverUrl    String?\n  genre       String?\n  creatorId   String\n  creator     User    @relation(fields: [creatorId], references: [id])\n\n  chapters Chapter[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Chapter {\n  id         String @id @default(cuid())\n  title      String\n  number     Int\n  w_seriesId String\n\n  w_series  WrittenSeries @relation(fields: [w_seriesId], references: [id])\n  createdAt DateTime      @default(now())\n\n  comments CommentWritten[]\n\n  @@unique([w_seriesId, number])\n}\n\nmodel CommentWritten {\n  id     String @id @default(cuid())\n  userId String\n\n  chapterId String\n  content   String\n\n  createdAt DateTime @default(now())\n\n  user    User    @relation(fields: [userId], references: [id])\n  chapter Chapter @relation(fields: [chapterId], references: [id])\n}\n\nmodel Artwork {\n  id          String   @id @default(cuid())\n  title       String\n  description String?\n  imageUrl    String\n  tags        String[]\n  createdAt   DateTime @default(now())\n\n  creatorId String\n  creator   User         @relation(fields: [creatorId], references: [id])\n  comments  ArtComment[]\n  likes     ArtLike[]\n}\n\nmodel ArtComment {\n  id        String   @id @default(cuid())\n  artworkId String\n  userId    String\n  content   String\n  createdAt DateTime @default(now())\n\n  artwork Artwork @relation(fields: [artworkId], references: [id])\n  user    User    @relation(fields: [userId], references: [id])\n}\n\nmodel ArtLike {\n  id        String @id @default(cuid())\n  artworkId String\n  userId    String\n\n  artwork Artwork @relation(fields: [artworkId], references: [id])\n  user    User    @relation(fields: [userId], references: [id])\n\n  @@unique([artworkId, userId])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Series\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coverUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"genre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creatorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creatorName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"episodes\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"EpisodeToSeries\"}],\"dbName\":null},\"Episode\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"seriesId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"series\",\"kind\":\"object\",\"type\":\"Series\",\"relationName\":\"EpisodeToSeries\"},{\"name\":\"images\",\"kind\":\"object\",\"type\":\"EpisodeImage\",\"relationName\":\"EpisodeToEpisodeImage\"},{\"name\":\"comments\",\"kind\":\"object\",\"type\":\"Comment\",\"relationName\":\"CommentToEpisode\"}],\"dbName\":null},\"EpisodeImage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"episodeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"episode\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"EpisodeToEpisodeImage\"}],\"dbName\":null},\"Comment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"episodeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"episode\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"CommentToEpisode\"}],\"dbName\":null},\"Artwork\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creatorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"creator\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"comments\",\"kind\":\"object\",\"type\":\"ArtComment\",\"relationName\":\"ArtCommentToArtwork\"},{\"name\":\"likes\",\"kind\":\"object\",\"type\":\"ArtLike\",\"relationName\":\"ArtLikeToArtwork\"}],\"dbName\":null},\"ArtComment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"artworkId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"artwork\",\"kind\":\"object\",\"type\":\"Artwork\",\"relationName\":\"ArtCommentToArtwork\"},{\"name\":\"user\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"ArtLike\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"artworkId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"artwork\",\"kind\":\"object\",\"type\":\"Artwork\",\"relationName\":\"ArtLikeToArtwork\"},{\"name\":\"user\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"bio\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"avatarUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"comicseries\",\"kind\":\"object\",\"type\":\"ComicSeries\",\"relationName\":\"ComicSeriesToUser\"},{\"name\":\"writtenseries\",\"kind\":\"object\",\"type\":\"WrittenSeries\",\"relationName\":\"UserToWrittenSeries\"},{\"name\":\"artworks\",\"kind\":\"object\",\"type\":\"Artwork\",\"relationName\":\"ArtworkToUser\"},{\"name\":\"c_comments\",\"kind\":\"object\",\"type\":\"CommentComics\",\"relationName\":\"CommentComicsToUser\"},{\"name\":\"w_comments\",\"kind\":\"object\",\"type\":\"CommentWritten\",\"relationName\":\"CommentWrittenToUser\"},{\"name\":\"artComments\",\"kind\":\"object\",\"type\":\"ArtComment\",\"relationName\":\"ArtCommentToUser\"},{\"name\":\"artLikes\",\"kind\":\"object\",\"type\":\"ArtLike\",\"relationName\":\"ArtLikeToUser\"}],\"dbName\":null},\"ComicSeries\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coverUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"genre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creatorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creator\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ComicSeriesToUser\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"episodes\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"ComicSeriesToEpisode\"}],\"dbName\":null},\"Episode\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"c_seriesId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"c_series\",\"kind\":\"object\",\"type\":\"ComicSeries\",\"relationName\":\"ComicSeriesToEpisode\"},{\"name\":\"images\",\"kind\":\"object\",\"type\":\"EpisodeImage\",\"relationName\":\"EpisodeToEpisodeImage\"},{\"name\":\"comments\",\"kind\":\"object\",\"type\":\"CommentComics\",\"relationName\":\"CommentComicsToEpisode\"}],\"dbName\":null},\"EpisodeImage\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"episodeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"episode\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"EpisodeToEpisodeImage\"}],\"dbName\":null},\"CommentComics\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"episodeId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CommentComicsToUser\"},{\"name\":\"episode\",\"kind\":\"object\",\"type\":\"Episode\",\"relationName\":\"CommentComicsToEpisode\"}],\"dbName\":null},\"WrittenSeries\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"coverUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"genre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creatorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creator\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToWrittenSeries\"},{\"name\":\"chapters\",\"kind\":\"object\",\"type\":\"Chapter\",\"relationName\":\"ChapterToWrittenSeries\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null},\"Chapter\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"number\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"w_seriesId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"w_series\",\"kind\":\"object\",\"type\":\"WrittenSeries\",\"relationName\":\"ChapterToWrittenSeries\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"comments\",\"kind\":\"object\",\"type\":\"CommentWritten\",\"relationName\":\"ChapterToCommentWritten\"}],\"dbName\":null},\"CommentWritten\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"chapterId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CommentWrittenToUser\"},{\"name\":\"chapter\",\"kind\":\"object\",\"type\":\"Chapter\",\"relationName\":\"ChapterToCommentWritten\"}],\"dbName\":null},\"Artwork\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"imageUrl\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tags\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"creatorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"creator\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ArtworkToUser\"},{\"name\":\"comments\",\"kind\":\"object\",\"type\":\"ArtComment\",\"relationName\":\"ArtCommentToArtwork\"},{\"name\":\"likes\",\"kind\":\"object\",\"type\":\"ArtLike\",\"relationName\":\"ArtLikeToArtwork\"}],\"dbName\":null},\"ArtComment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"artworkId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"content\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"artwork\",\"kind\":\"object\",\"type\":\"Artwork\",\"relationName\":\"ArtCommentToArtwork\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ArtCommentToUser\"}],\"dbName\":null},\"ArtLike\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"artworkId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"artwork\",\"kind\":\"object\",\"type\":\"Artwork\",\"relationName\":\"ArtLikeToArtwork\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ArtLikeToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -58,8 +58,8 @@ export interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Series
-   * const series = await prisma.series.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    * 
    * Read more in our [docs](https://pris.ly/d/client).
@@ -80,8 +80,8 @@ export interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Series
- * const series = await prisma.series.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -175,14 +175,24 @@ export interface PrismaClient<
   }>>
 
       /**
-   * `prisma.series`: Exposes CRUD operations for the **Series** model.
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Series
-    * const series = await prisma.series.findMany()
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
     * ```
     */
-  get series(): Prisma.SeriesDelegate<ExtArgs, { omit: OmitOpts }>;
+  get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.comicSeries`: Exposes CRUD operations for the **ComicSeries** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ComicSeries
+    * const comicSeries = await prisma.comicSeries.findMany()
+    * ```
+    */
+  get comicSeries(): Prisma.ComicSeriesDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
    * `prisma.episode`: Exposes CRUD operations for the **Episode** model.
@@ -205,14 +215,44 @@ export interface PrismaClient<
   get episodeImage(): Prisma.EpisodeImageDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.comment`: Exposes CRUD operations for the **Comment** model.
+   * `prisma.commentComics`: Exposes CRUD operations for the **CommentComics** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Comments
-    * const comments = await prisma.comment.findMany()
+    * // Fetch zero or more CommentComics
+    * const commentComics = await prisma.commentComics.findMany()
     * ```
     */
-  get comment(): Prisma.CommentDelegate<ExtArgs, { omit: OmitOpts }>;
+  get commentComics(): Prisma.CommentComicsDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.writtenSeries`: Exposes CRUD operations for the **WrittenSeries** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WrittenSeries
+    * const writtenSeries = await prisma.writtenSeries.findMany()
+    * ```
+    */
+  get writtenSeries(): Prisma.WrittenSeriesDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.chapter`: Exposes CRUD operations for the **Chapter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Chapters
+    * const chapters = await prisma.chapter.findMany()
+    * ```
+    */
+  get chapter(): Prisma.ChapterDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.commentWritten`: Exposes CRUD operations for the **CommentWritten** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CommentWrittens
+    * const commentWrittens = await prisma.commentWritten.findMany()
+    * ```
+    */
+  get commentWritten(): Prisma.CommentWrittenDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
    * `prisma.artwork`: Exposes CRUD operations for the **Artwork** model.
