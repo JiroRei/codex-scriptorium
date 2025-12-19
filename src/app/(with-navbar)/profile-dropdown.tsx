@@ -25,7 +25,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { SignedIn, useClerk, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import * as ico from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -33,6 +33,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { ArtZodGoodies, createArtSchema } from "@/lib/artwork.schema";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createArtwork } from "../actions/create-artwork";
+import { toast } from "sonner";
 
 const myFont = MedievalSharp({
   weight: "400",
@@ -48,7 +49,17 @@ export default function ProfileMenu(){
   const [fileName, setFileName] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  
+
+  const form = useForm<ArtZodGoodies>({
+    resolver: zodResolver(createArtSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      imageUrl: undefined,
+      tags: [],
+      creatorId: user?.id
+    }
+  })
 
   useEffect(() => {
     if (!file) {
@@ -69,19 +80,42 @@ export default function ProfileMenu(){
   }
   }, [showNewDialog]);
 
-  const form = useForm<ArtZodGoodies>({
-    resolver: zodResolver(createArtSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      imageUrl: undefined,
-      tags: [],
-      creatorId: user?.id
-    }
-  })
+  const onSubmit = async (values: ArtZodGoodies) => {
+    startTransition(async () => {
+      try {
+        const formData = new FormData();
+        formData.append("title", values.title);
+        formData.append("description", values.description || "");
+        
+        if (values.imageUrl && values.imageUrl[0]) {
+          formData.append("imageUrl", values.imageUrl[0]);
+        }
+        
+        if (values.tags && values.tags.length > 0) {
+          formData.append("tags", values.tags.join(","));
+        }
 
-  const onSubmit = async (values: any) => {
-    await createArtwork(values);
+        const result = await createArtwork(formData);
+
+        if (result.error) {
+          toast("Error", {
+            description: result.error,
+          });
+          return;
+        }
+
+        toast("Success", {
+          description: result.message || "Artwork uploaded successfully!",
+        });
+        
+        setShowNewDialog(false);
+        form.reset();
+      } catch (error) {
+        toast("Error", {
+          description: "Something went wrong. Please try again.",
+        });
+      }
+    });
   }
   
   function handleFileChange(e: any){
@@ -175,7 +209,6 @@ export default function ProfileMenu(){
                     <FormControl>
                       <Input
                         type="file"
-                        // ref={fileInputRef}
                         className=""
                         onChange={(e) => {
                           handleFileChange(e);
