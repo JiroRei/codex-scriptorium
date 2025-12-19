@@ -7,6 +7,7 @@ import { auth } from "@clerk/nextjs/server"
 import { resolve } from 'path';
 import { rejects } from 'assert';
 import { revalidatePath } from 'next/cache';
+import { createArtSchema } from '@/lib/artwork.schema';
 
 cloudinary.config({
     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
@@ -14,35 +15,67 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
-export async function createArtwork(body: any){
+export async function createArtwork(formData: FormData){
     const { userId } = await auth()
-
     if (!userId) {
-    throw new Error("Not authenticated")
+        throw new Error("Not authenticated")
     }
-    
-    const file = body.imageUrl[0] as File;
 
-    const arrayBuffer = await file.arrayBuffer()
-    const buffer = new Uint8Array(arrayBuffer)
-    const result = await new Promise<any>((resolve, reject) => {
-        cloudinary.uploader.upload_stream({}, function(error, result){
-            if (error) {
-                reject(error);
-                return;
-            }
-            resolve(result);
-        }).end(buffer)
-    })
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const imageFile = formData.get("imageUrl") as File;
 
-    const payload:any = {
-        title: body.title,
-        creatorId: body.creatorId,
-        description: body.description,
-        imageUrl: result.secure_url,
-    }    
-    await prisma.user.create({ 
-        data: payload
-    })
-    
+    const validationResult = createArtSchema.safeParse({
+        title,
+        description,
+        imageUrl: imageFile,
+        creatorId: userId,
+    });
+
+    if (!validationResult.success) {
+        return {
+        error: "Validation failed",
+        details: validationResult.error.flatten(),
+        };
+    }
+
+    if (!imageFile || imageFile.size === 0) {
+        return { error: "Please select an image file" };
+    }
+
+    try {
+        const arrayBuffer = await imageFile.arrayBuffer()
+        const buffer = new Uint8Array(arrayBuffer)
+        const result = await new Promise<any>((resolve, reject) => {
+            cloudinary.uploader.upload_stream({}, function(error, result){
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve(result);
+            }).end(buffer)
+        })
+        
+        const artwork = await prisma.artwork.create({
+            data: {
+                title: validationResult.data.title,
+                description: validationResult.data.description,
+                imageUrl: result.secure_url,
+                tags: validationResult.data.tags,
+                creatorId: userId,
+            },
+        });
+
+        return { 
+            success: true, 
+            artworkId: artwork.id,
+            message: "Artwork uploaded successfully!" 
+        };
+    } catch (error) {
+        console.error("Error creating artwork:", error);
+        return { 
+            error: "Failed to upload artwork. Please try again." 
+        };
+
+    }
 }
