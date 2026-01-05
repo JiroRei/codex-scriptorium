@@ -38,6 +38,7 @@
     "dotenv": "^17.2.3",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.26",
+    "justified-layout": "^4.1.0",
     "lucide-react": "^0.560.0",
     "next": "16.0.8",
     "next-cloudinary": "^6.17.5",
@@ -47,6 +48,7 @@
     "react-dom": "19.2.1",
     "react-hook-form": "^7.68.0",
     "react-resizable-panels": "^3.0.6",
+    "react-snowfall": "^2.4.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.1.13"

@@ -13,7 +13,6 @@ const myFont2 = Eagle_Lake({ weight: "400", subsets: ["latin"] });
 export default function GlobalError({ error, reset }: { error: any; reset: () => void }) {
   console.log("GlobalError received error:", error);
 
-  // Check status property or nested response
   const statusCode =
   typeof error?.status === "number"
     ? error.status
@@ -21,7 +20,7 @@ export default function GlobalError({ error, reset }: { error: any; reset: () =>
     ? error.status
     : typeof error?.response?.status === "number"
     ? error.response.status
-    : 500; // fallback
+    : 500;
 
 
 

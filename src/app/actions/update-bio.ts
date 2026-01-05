@@ -17,7 +17,7 @@ export async function updateBio(newBio: string) {
   }
 
   await prisma.user.update({
-    where: { id: userId }, // 🔒 THIS IS THE LOCK
+    where: { id: userId },
     data: { bio: newBio },
   })
 

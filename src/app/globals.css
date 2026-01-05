@@ -329,6 +329,8 @@
   }
 }
 
-
-
+.niggalicious {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  background-color: #A33A3A;
+}
 

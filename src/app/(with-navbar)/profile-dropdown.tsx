@@ -184,7 +184,7 @@ export default function ProfileMenu(){
                     <FormLabel>Title</FormLabel>
                     <FormControl>
                       <Input type="text" placeholder="Title of your work"
-                      {...field} className="-shadow focus-visible:ring-[1px] bg-white"/>
+                      {...field} className="-shadow focus-visible:ring-[1px] bg-white flex mt-2"/>
                     </FormControl>
                   </FormItem>
                 )} />
@@ -197,7 +197,7 @@ export default function ProfileMenu(){
                         placeholder="Describe your work here."
                         maxLength={150}
                         {...field}
-                        className="-shadow focus-visible:ring-[1px] bg-white"
+                        className="-shadow focus-visible:ring-[1px] bg-white flex mt-2"
                       />
                     </FormControl>
                   </FormItem>
@@ -209,7 +209,7 @@ export default function ProfileMenu(){
                     <FormControl>
                       <Input
                         type="file"
-                        className=""
+                        className="flex mt-2"
                         onChange={(e) => {
                           handleFileChange(e);
                           onChange(e.target.files);
@@ -224,7 +224,7 @@ export default function ProfileMenu(){
               
               <div className="flex justify-center">
                 {previewUrl && (
-                <div className="relative w-full max-w-xs aspect-square  rounded overflow-hidden">
+                <div className="relative w-full max-w-xs aspect-square rounded overflow-hidden">
                   <Image
                     src={previewUrl}
                     alt="Preview"

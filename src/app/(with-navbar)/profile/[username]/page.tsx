@@ -8,7 +8,6 @@ export default async function ProfilePage({params}: {params: Promise<{username: 
   const { userId: viewerId } = await auth()
   const clerkUser = viewerId ? await currentUser() : null
 
-  // 1️⃣ Fetch profile being viewed
   const profileUser = await prisma.user.findUnique({
     where: { username: username },
     include: {
@@ -20,7 +19,6 @@ export default async function ProfilePage({params}: {params: Promise<{username: 
 
   if (!profileUser) notFound()
 
-  // 2️⃣ Ensure DB row exists ONLY for the viewer
   if (viewerId) {
     await prisma.user.upsert({
       where: { id: viewerId },
