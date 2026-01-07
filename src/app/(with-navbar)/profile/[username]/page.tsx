@@ -17,8 +17,6 @@ export default async function ProfilePage({params}: {params: Promise<{username: 
     },
   })
 
-  if (!profileUser) notFound()
-
   if (viewerId) {
     await prisma.user.upsert({
       where: { id: viewerId },
@@ -30,6 +28,8 @@ export default async function ProfilePage({params}: {params: Promise<{username: 
       },
     })
   }
+
+  if (!profileUser) notFound()
 
   return (
     <ProfilePageUI

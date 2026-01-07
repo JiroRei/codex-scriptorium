@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import ProfileBio from "./bio-modal";
+import { useArtworkById } from "@/hooks/use-artwork";
 
 
 const myFont = Eagle_Lake({
@@ -43,8 +44,9 @@ export default function ProfilePageUI({
   dbUser: any
   viewerId: string | null
 }){
-
     const isOwner = viewerId === dbUser.id
+    const { data: artworks, isLoading, isError } = useArtworkById(dbUser.id);
+    console.log(artworks);
 
     return(
         <main className="mb-10 p-3">
@@ -84,8 +86,7 @@ export default function ProfilePageUI({
                                         <p>Edit bio</p>
                                         </TooltipContent>
                                     </Tooltip>
-                                    )}
-                                
+                                )}
                             </div>
                         </div>
 
@@ -108,6 +109,16 @@ export default function ProfilePageUI({
                     <Separator className="bg-red-800"/>
                 </div>
                 <div className="flex justify-center mt-2 gap-4">
+                    {artworks?.map((artwork: any) => (
+                        <Image 
+                            key={artwork.id}
+                            src={artwork.imageUrl ?? "/default-avatar.png"} 
+                            width={250} 
+                            height={250} 
+                            alt="ProfilePicture" 
+                            className="object-cover border-2 border-accent"
+                        />
+                    ))}
                     <h1 className="text-muted-foreground">This scribe has no illustrated works yet.</h1>
                 </div>
             </div>

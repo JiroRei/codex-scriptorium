@@ -137,6 +137,8 @@ model Artwork {
   description String?
   imageUrl    String   
   tags        String[]  
+  width       Int
+  height      Int
   createdAt   DateTime  @default(now())
 
   creatorId   String

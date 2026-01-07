@@ -62,9 +62,13 @@ export async function createArtwork(formData: FormData){
                 description: validationResult.data.description,
                 imageUrl: result.secure_url,
                 tags: validationResult.data.tags,
+                width: result.width,
+                height: result.height,
                 creatorId: userId,
             },
         });
+        
+        console.log("Artwork created:", result);
 
         return { 
             success: true, 
